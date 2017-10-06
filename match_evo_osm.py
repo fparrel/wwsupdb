@@ -1,12 +1,12 @@
 import json
 from fuzzywuzzy import fuzz
 
-console_encoding = 'latin1'
+console_encoding = 'utf8' #latin1 on Windows
 
 # Load data from different sources
 
-rivers_evo=json.load(open('eauxvives_org2.json','r'))
-rivers_osm=json.load(open('osm_rivers_06-3.json','r'))
+rivers_evo=json.load(open('eauxvives_org.json','r'))
+rivers_osm=json.load(open('osm_rivers_fr-from_pbf.json','r'))
 
 rivers_output = []
 
