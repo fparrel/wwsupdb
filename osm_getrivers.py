@@ -1,3 +1,16 @@
+#!/usr/bin/env python
+
+#
+# Script to get rivers from wmflabs (source OSM)
+#
+
+dept06_fr = (6.559029,43.455733,7.734566,44.363941)
+france = (-7.84,42.27,8.25,51.18)
+
+input_bbox = france
+output_filename = 'osm_rivers_fr.json'
+
+
 import requests
 import re
 import json
@@ -27,12 +40,8 @@ def get_rivers_pbf():
     pass
 
 def main():
-    dept06_fr = (6.559029,43.455733,7.734566,44.363941)
-    france = (-7.84,42.27,8.25,51.18)
-    #bbox = dept06_fr
-    #json.dump(list(get_rivers(bbox)),open('osm_rivers_06-3.json','w'))
-    bbox = france
-    json.dump(list(get_rivers_wmflabs(bbox)),open('osm_rivers_fr.json','w'))
+    while open(output_filename,'w') as f:
+        json.dump(list(get_rivers_wmflabs(input_bbox)),f)
 
 if __name__=='__main__':
     main()

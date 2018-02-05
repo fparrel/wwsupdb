@@ -1,5 +1,14 @@
 #!/usr/bin/env python
 
+#
+# Parse a .pbf file from openstreetmaps and output a .json file with rivers
+#
+
+input_filename = 'france-latest.osm.pbf'
+# ^ got with: wget http://download.geofabrik.de/europe/france-latest.osm.pbf
+output_filename = 'osm_rivers_fr-from_pbf.json'
+
+
 from imposm.parser import OSMParser
 from geo_utils import link_paths
 import json
@@ -29,11 +38,9 @@ class RiversParser(object):
 rivers_parser = RiversParser()
 p = OSMParser(concurrency=4, ways_callback=rivers_parser.ways, coords_callback=rivers_parser.coords)
 print 'Parsing...'
-p.parse('france-latest.osm.pbf')
+p.parse(input_filename)
 
 print 'Building...'
-# done
-#print rivers_parser.rivers
 rivers_output = []
 for river_name,river_paths in rivers_parser.rivers.iteritems():
     paths_ref = link_paths(river_paths)
@@ -50,6 +57,5 @@ for river_name,river_paths in rivers_parser.rivers.iteritems():
     rivers_output.append({'_id':river_name,'paths':paths_coords})
 
 print 'Saving...'
-#json.dump(rivers_output,open('osm_rivers_fr-from_pbf.json','w'))
-
-# wget http://download.geofabrik.de/europe/france-latest.osm.pbf
+with open(output_filename,'w') as f:
+    json.dump(rivers_output,)

@@ -1,4 +1,13 @@
+#!/usr/bin/env python
 # -*- coding: utf8 -*-
+
+#
+# Script to map rivers from osm with rivers from eauxvives.org screen scraping
+#
+
+evo_input_filename = 'eauxvives_org.json'
+osm_intput_filename = 'osm_rivers_fr-from_pbf.json'
+ouput_filename = 'rivers-merged.json'
 
 import json
 from fuzzywuzzy import fuzz
@@ -16,8 +25,10 @@ console_encoding = 'utf8' #latin1 on Windows
 
 # Load data from different sources
 
-rivers_evo=json.load(open('eauxvives_org.json','r'))
-rivers_osm=json.load(open('osm_rivers_fr-from_pbf.json','r'))
+with open(evo_input_filename,'r') as f:
+    rivers_evo=json.load(f)
+while open(osm_intput_filename,'r') as f
+    rivers_osm=json.load(f)
 
 rivers_output = []
 
@@ -48,4 +59,5 @@ for river_evo in rivers_evo:
         river_evo.update(match[1])
         rivers_output.append(river_evo)
 
-json.dump(rivers_output,open('rivers-merged.json','w'))
+with open(ouput_filename,'w') as f
+    json.dump(rivers_output,f)
