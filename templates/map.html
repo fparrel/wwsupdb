@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}{{_('Replay your GPS Tracks with REGEPE - Prepare itinerary')}}{% endblock %}
+{% block urlext %}prepare{% endblock %}
+{% block headext %}<link type="text/css" rel="StyleSheet" href="/static/styles/map.css" />{% endblock %}
+{% block body %}
+            <div>Load river: <input type="text" onkeydown="search_river(event,this.value);"/> Current river: <span id="river_name"/>
+            </div>
+            <div id="mapnwpts" style="float:left; margin:10px 0px;">
+                <div id="maptotal" style="float: left;">
+                    <div id="mapresizer" style="height:500px;width:500px;resize:both; border:2px solid;overflow:auto;padding:8px;">
+{% if map_type=="GMaps" %}
+                        <div id="map" style="height:100%;width:100%;" class="map" title="{{_('Click on map to add a point')}}" onmousewheel="onMapMouseWheel(event);" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
+{% elif map_type=="GeoPortal" %}
+                        <div id="map" style="height:500px;width:500px;" title="{{_('Click on map to add a point')}}" tabindex="0" onkeydown="onMapKeyDown(event);"></div>
+{% endif %}
+                    </div>
+                    <div>{{_('Switch to: ')}}{% if map_type=="GMaps" %}<a id="switch2GeoPortal" href="/prepare/GeoPortal"/>Geo Portal</a>{% else %}<a id="switch2GeoPortal" href="/prepare/GMaps"/>Google Maps</a>{% endif %}
+                    </div>
+                </div>
+                <div id="map_right">
+                    <h2>Parcours</h2><div id="parcours"></div>
+                    <div id="itiinfos" style="margin-top:10px;"><b>{{_('Length:')}}</b> <span id="length"></span> <b>{{_('D+:')}}</b> <span id="dplus"></span> <b>{{_('D-:')}}</b> <span id="dminus"></span></div>
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+            <input type="button" onclick="flush();" value="Flush" />
+            <h2>Server response:</h2>
+            <div id="svrresponse"></div>
+            <div id="profile" style="margin-top:10px;">
+                <input id="compprofilebtn" type="button" value="{{_('Compute Profile')}}" onclick="onComputeProfileClick();"/><img id="compprofileloading" />
+                <div style="clear:both;"></div>
+                <div id="profile_infos" style="float: left; line-height:1.5em; height:6em; border: 1px solid; display: none;">&nbsp;</div>
+                <div id="curpt_infos" style="float: left; line-height:1.5em; height:6em; border: 1px solid; display: none;">&nbsp;</div>
+                <div style="clear:both;"></div>
+                <div id="profilechartntitlenctrl" style="display:inline-block;">
+                    <div id="profile_img" style="width:800px;height:200px;border-style:solid;border-width:1px;">
+                        <div class="chart" id="profilechart" style="padding:0; border: 0px;width:800px;height:200px">
+                        </div>
+                    </div>
+                    <div id="profile_title" style="font-style:italic;text-align:center;">&nbsp;</div>
+                </div>
+            </div>
+            <div id="printmap" style="margin-top:10px;">
+                <input type="button" value="{{_('Print Map')}}" onclick="onBuildMapClick();"/>
+            </div>
+{% endblock %}
+{% block jsext %}
+<script type="text/javascript" src='/static/javascript/raphael-min.js'></script>
+<script type="text/javascript" src='/static/javascript/g.raphael-min.js'></script>
+<script type="text/javascript" src='/static/javascript/g.line-min.js'></script>
+<script type="text/javascript" src="/static/javascript/jquery.js"></script>
+<script type="text/javascript" src="/static/javascript/jquery.flot.js"></script>
+<script type="text/javascript" src="/static/javascript/jquery.flot.selection.js"></script>
+<script type="text/javascript" src="/static/javascript/jquery.flot.time.js"></script>
+{% if map_type=="GMaps" %}
+<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key={{ GMapsApiKey }}"></script>
+{% elif map_type=="GeoPortal" %}
+<script type="text/javascript" charset="utf-8" src='http://api.ign.fr/geoportail/api/js/2.0.0/Geoportal.js'></script>
+<style type="text/css" media="print">
+body{display:inline;}
+</style>
+{% endif %}
+<script type="text/javascript" src="/static/javascript/utils{{minify}}.js"></script>
+<script type="text/javascript">
+domain="{{domain}}";
+map_type="{{map_type}}";
+GeoPortalApiKey="{{ GeoPortalApiKey }}";
+</script>
+<script type="text/javascript" src="/static/javascript/prepare{{minify}}.js"></script>
+{% if map_type=="GMaps" %}
+<script type="text/javascript" src="/static/javascript/preparegmaps{{minify}}.js"></script>
+{% elif map_type=="GeoPortal" %}
+<script type="text/javascript" src="/static/javascript/preparegeoportal{{minify}}.js"></script>  
+{% endif %}
+{% endblock %}

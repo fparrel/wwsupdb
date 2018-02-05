@@ -1,5 +1,13 @@
 #!/usr/bin/env python
 
+#
+# Screen scrap from eauxvives.org and output to a .json file
+#
+
+# To run:
+# scrapy runspider eauxvives_org-scrap.py -o eauxvives_org.json --logfile=eauxvives_org.log
+
+
 import scrapy
 import urlparse
 import urllib2
@@ -71,4 +79,5 @@ class BlogSpider(scrapy.Spider):
         doc['parcours'] = doc['parcours'].values()
         yield doc
 
-#scrapy runspider eauxvives_org-scrap.py -o eauxvives_org.json --logfile=eauxvives_org.log
+if __name__=='__main__':
+    print 'Run me with the following command: scrapy runspider eauxvives_org-scrap.py -o eauxvives_org.json --logfile=eauxvives_org.log'
