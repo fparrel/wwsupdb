@@ -12,6 +12,7 @@ output_filename = 'osm_rivers_fr-from_pbf.json'
 from imposm.parser import OSMParser
 from geo_utils import link_paths
 import json
+import datetime
 
 # simple class that handles the parsed OSM data.
 class RiversParser(object):
@@ -37,10 +38,10 @@ class RiversParser(object):
 # instantiate counter and parser and start parsing
 rivers_parser = RiversParser()
 p = OSMParser(concurrency=4, ways_callback=rivers_parser.ways, coords_callback=rivers_parser.coords)
-print 'Parsing...'
+print 'Parsing... %s' % datetime.datetime.now()
 p.parse(input_filename)
 
-print 'Building...'
+print 'Building... %s' % datetime.datetime.now()
 rivers_output = []
 for river_name,river_paths in rivers_parser.rivers.iteritems():
     paths_ref = link_paths(river_paths)
@@ -58,4 +59,4 @@ for river_name,river_paths in rivers_parser.rivers.iteritems():
 
 print 'Saving...'
 with open(output_filename,'w') as f:
-    json.dump(rivers_output,)
+    json.dump(rivers_output,f)

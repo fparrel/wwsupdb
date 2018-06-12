@@ -1,0 +1,12 @@
+[package]
+name = "pbfparser"
+version = "0.1.0"
+authors = ["Frederic Parrel <fredericparrel@gmail.com>"]
+
+[dependencies]
+osm_pbf_iter = "0.1.0"
+bson = "0.10"
+mongodb = "0.3.7"
+serde = "1.0.66"
+serde_derive = "1.0.66"
+num_cpus = "~1.2.1"
