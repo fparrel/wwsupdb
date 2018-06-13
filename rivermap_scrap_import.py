@@ -13,6 +13,7 @@ for s in r.find('stationen'):
 
 # Parse parcours and group them by river
 rivers = {}
+typeid2str = {'1':'section','2':'slalom','3':'playspot','4':'waterfall'}
 for a in r.find('abschnitte'):
   parcours = {'name':a.attrib['strecke'],
               'ww_class':a.attrib['ww'],
@@ -21,9 +22,10 @@ for a in r.find('abschnitte'):
               'region':a.attrib['region']
               }
   # unidentified tags
+  # level unknown, station unknown, med water med, low water,...?
   assert(a.attrib['wertung'] in ('C_LVU', 'C_STU', 'C_MWM', 'C_NWP', 'C_HWU', 'C_NNW', 'C_HWP', 'C_HHW', 'C_NWM', 'C_HWM', 'C_RGU', 'C_MWP', 'C_LV_OLD'))
-  assert(a.attrib['typeId'] in ('1','2','3','4'))
-  assert(a.attrib['hilfsstation'] in ('0', '1')) # Station is upstream or downstream of route
+  # item type
+  parcours['type'] = typeid2str[a.attrib['typeId']]
   # parse length
   assert(a.attrib['luft'][-3:]==' km')
   if a.attrib['luft'][:-3]!='':
@@ -44,6 +46,7 @@ for a in r.find('abschnitte'):
     if high!=0.0:
       parcours['water_lvls_kayak']['low']=high
     assert(a.attrib['einheit'] in ('cm', u'm\xb3/s'))
+    parcours['station_is_indirect'] = (a.attrib['hilfsstation']=='1')
   else:
     print 'no station for',parcours['name'].encode('utf8')
     assert(a.attrib['einheit']=='')
