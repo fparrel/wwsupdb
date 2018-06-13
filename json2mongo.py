@@ -3,8 +3,8 @@
 import pymongo,sys,json
 
 client = pymongo.MongoClient()
-db = client.wwsupdb2
+db = client.wwsupdb
 
 for river in json.load(open(sys.argv[1],"r")):
-    db.rivers.insert(river)
+    db[sys.argv[2]].insert(river)
 

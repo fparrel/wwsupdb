@@ -2,15 +2,17 @@
 # -*- coding: utf8 -*-
 
 #
-# Script to map rivers from osm with rivers from eauxvives.org screen scraping
-#
+# Script to map rivers from different sources:
+#    osm with rivers from eauxvives.org screen scraping
+#    osm with rivers from rivermap.ch screen scraping
 
 # Options
 
-evo_input = ('file','eauxvives_org.json')
-osm_input = ('mongo','rivers')
+src2_input = ('file','eauxvives_org.json','evo')
+#src2_input = ('mongo','rivermap','rivermap')
+src1_input = ('mongo','rivers')
 #output = ('file','rivers_merged2.json')
-output = ('mongo','rivers_merged')
+output = ('mongo','rivers_merged2')
 print_not_found = False
 console_encoding = 'utf8' #latin1 on Windows
 BULK_SIZE = 10
@@ -18,7 +20,7 @@ BULK_SIZE = 10
 # Hard codes
 
 # Bad fuzzy matches
-exclude_list = (('Garon', 'La Garonne'),('Volp','Volpajola'),('Rauma','Le Raumartin'),('Ostri','Ostriconi'),('Orb','U Fium Orbu'))
+exclude_list = (('Garon', 'La Garonne'),('Volp','Volpajola'),('Rauma','Le Raumartin'),('Ostri','Ostriconi'),('Orb','U Fium Orbu'),('Dore','Dorette'))
 
 # Duplicates and how to handle it
 drac_first = None
@@ -37,7 +39,7 @@ def handleDrac(evo,osm):
         osm['name_evo'] = evo["name"]
         river_output(osm)
 
-evo_dup_list = {'Drac':handleDrac}
+src2_dup_list = {'Drac':handleDrac}
 
 unsignificant_tokens = ['Rivière','Ruisseau']
 
@@ -59,34 +61,34 @@ def remove_tokens(s,tokens):
 # Prepare data input and output
 
 # Connect to MongoDB if needed
-if 'mongo' in (evo_input[0],osm_input[0],output[0]):
+if 'mongo' in (src2_input[0],src1_input[0],output[0]):
     import pymongo
     client = pymongo.MongoClient()
 
-# Open evo data
-if evo_input[0]=='file':
-    with open(evo_input[1],'r') as f:
-        rivers_evo_json=json.load(f)
-    def rivers_evo():
-        for river in rivers_evo_json:
+# Open source 2 data
+if src2_input[0]=='file':
+    with open(src2_input[1],'r') as f:
+        src2_json=json.load(f)
+    def rivers_src2():
+        for river in src2_json:
             yield river
-elif evo_input[0]=='mongo':
-    def rivers_evo():
-        for river in client.wwsupdb[evo_input[1]].find():
+elif src2_input[0]=='mongo':
+    def rivers_src2():
+        for river in client.wwsupdb[src2_input[1]].find():
             yield river
 else:
     raise Exception('Input type not handled')
 
-# Open osm data
-if osm_input[0]=='file':
-    with open(osm_input[1],'r') as f:
-        rivers_osm_json=json.load(f)
-    def rivers_osm():
-        for river in rivers_osm_json:
+# Open source 1 data
+if src1_input[0]=='file':
+    with open(src1_input[1],'r') as f:
+        src1_json=json.load(f)
+    def rivers_src1():
+        for river in src1_json:
             yield river
-elif osm_input[0]=='mongo':
-    def rivers_osm():
-        for river in client.wwsupdb[osm_input[1]].find():
+elif src1_input[0]=='mongo':
+    def rivers_src1():
+        for river in client.wwsupdb[src1_input[1]].find():
             yield river
 else:
     raise Exception('Input type not handled')
@@ -110,44 +112,44 @@ else:
 
 # Try to match
 
-for river_evo in rivers_evo():
-    name_evo = river_evo['name']
+for river_src2 in rivers_src2():
+    name_src2 = river_src2['name']
     matches = []
 
     # First try to match with partial_ratio (example: 'The Big River" = "Big River")
-    for river_osm in rivers_osm():
-        if fuzz.partial_ratio(name_evo,remove_tokens(river_osm['_id'],unsignificant_tokens)) == 100:
-            matches.append((river_osm['_id'],river_osm))
+    for river_src1 in rivers_src1():
+        if fuzz.partial_ratio(name_src2,remove_tokens(river_src1['_id'],unsignificant_tokens)) == 100:
+            matches.append((river_src1['_id'],river_src1))
 
     if len(matches)>0:
 
         # If there are several matches use ratio instead of partial_ratio and get the best
         if len(matches)>1:
-            ratio_matches = map(lambda match: (fuzz.ratio(name_evo,remove_tokens(match[0],unsignificant_tokens)),match),matches)
+            ratio_matches = map(lambda match: (fuzz.ratio(name_src2,remove_tokens(match[0],unsignificant_tokens)),match),matches)
             ratio_matches.sort(reverse=True)
             match = ratio_matches[0][1]
         else:
             match = matches[0]
 
-        if (name_evo,match[1]['_id']) in exclude_list:
-            print 'Ignoring bad match evo: %s\tosm: %s' % (name_evo,match[1]['_id'])
+        if (name_src2,match[1]['_id']) in exclude_list:
+            print 'Ignoring bad match SRC2: %s\tSRC1: %s' % (name_src2,match[1]['_id'])
             continue
 
-        print 'evo: %s\tosm: %s' % (name_evo.encode(console_encoding), match[1]['_id'].encode(console_encoding))
+        print 'SRC2: %s\tSRC1: %s' % (name_src2.encode(console_encoding), match[1]['_id'].encode(console_encoding))
 
-        if name_evo in evo_dup_list:
-            print 'Handling EVO duplicate %s' % name_evo
-            evo_dup_list[name_evo](river_evo,match[1])
+        if name_src2 in src2_dup_list:
+            print 'Handling SRC2 duplicate %s' % name_src2
+            src2_dup_list[name_src2](river_src2,match[1])
             continue
 
-        match[1]['name_evo'] = name_evo
-        match[1].update(river_evo)
+        match[1]['name_%s'%src2_input[2]] = name_src2
+        match[1].update(river_src2)
         river_output(match[1])
 
     else:
 
         if print_not_found:
-            print 'EVO river %s not found in OSM' % (name_evo.encode(console_encoding))
+            print 'SRC2 river %s not found in SRC1' % (name_src2.encode(console_encoding))
 
 if output[0]=='file':
     with open(output[1],'w') as f:

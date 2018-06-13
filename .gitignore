@@ -99,3 +99,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# data and config files
+*.osm.pbf
+mongo_data/
+config/
+
