@@ -51,7 +51,7 @@ function computePathLengthAndEleDiff(points) {
     var l = 0;
     var dminus = 0;
     var dplus = 0;
-    for(i=1;i<points.length;i++) {
+    /*for(i=1;i<points.length;i++) {
         l += geodeticDist(points[i-1].pt.lat,points[i-1].pt.lon,points[i].pt.lat,points[i].pt.lon);
         points[i].pt.dist = l;
         if ((typeof points[i].pt.ele != "undefined")&&(typeof points[i-1].pt.ele != "undefined")) {
@@ -59,7 +59,7 @@ function computePathLengthAndEleDiff(points) {
             if(d>0) dplus += d;
             else dminus += -d;
         }
-    }
+    }*/
     return [l,dplus,dminus];
 }
 
@@ -388,17 +388,23 @@ function addRiverToMap(river_obj) {
     river_points = [];
     var i;
     var j;
-    var k = 0;
+    //var k = 0;
     var pts=[];
     for(i=0;i<river_obj.paths.length;i++) {
+        pts[i]=[];
         for(j=0;j<river_obj.paths[i].length;j++) {
-            pts[k] = {"lat": river_obj.paths[i][j][1], "lon": river_obj.paths[i][j][0],"name":" "+i+" "+j};
-            k++;
+            pts[i][j] = {"lat": river_obj.paths[i][j][0], "lon": river_obj.paths[i][j][1],"name":" "+i+" "+j};
+            //k++;
         }
     }
     addRiverPoints(pts);
     current_river = river_obj['name'];
     console.log(river_obj);
     var i=-1;
-    $("#parcours").html('<ul><li>'+river_obj.parcours.map(function(p) { i++; return p.name + '<ul><li onClick="setEmb(this,\''+current_river+'\','+i+');" class="emb_deb">Emb:'+p.embarquement+'</li><li onClick="setDeb(this,\''+current_river+'\','+i+');" class="emb_deb">Deb:'+p.debarquement+'</li></ul>'; }).join('</li><li>')+'</li></ul>');
+    $("#nb_paths").html(river_obj.paths.length);
+    if ("parcours" in river_obj) {
+      $("#parcours").html('<ul><li>'+river_obj.parcours.map(function(p) { i++; return p.name + '<ul><li onClick="setEmb(this,\''+current_river+'\','+i+');" class="emb_deb">Emb:'+p.embarquement+'</li><li onClick="setDeb(this,\''+current_river+'\','+i+');" class="emb_deb">Deb:'+p.debarquement+'</li></ul>'; }).join('</li><li>')+'</li></ul>');
+    } else {
+      $("#parcours").html('<b>No parcours in db</b>');
+    }
 }

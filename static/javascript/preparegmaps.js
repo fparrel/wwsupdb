@@ -1,19 +1,26 @@
 
 /* redraw track polyline from contents of river_points */
 function redrawRiverLine() {
-    if (typeof line != "undefined") {
-        line.setMap(null);
-    }
+  var pathi;
+  if (typeof line != "undefined") {
+      var i;
+      for(i=0;i<line.length;i++)
+        line[i].setMap(null);
+  } else {
+    line = [];
+  }
+  for(pathi=0;pathi<river_points.length;pathi++) {
     if(noline)return;
-    line = new google.maps.Polyline(
+    line[pathi] = new google.maps.Polyline(
         {
-            path: river_points,
+            path: river_points[pathi],
             geodesic: true,
             strokeColor: "#bb8000",
             strokeOpacity: 1.0,
             strokeWeight: 4
         });
-    line.setMap(map);
+    line[pathi].setMap(map);
+  }
 }
 
 /* remove all markers */
@@ -39,9 +46,12 @@ function addPoint(newpt) {
 }
 
 /* Add a given point object to the map */
-function addRiverPoint(newpt,index) {
-    river_points[index] = new google.maps.LatLng(newpt.lat,newpt.lon);
-    river_points[index].pt = newpt;
+function addRiverPoint(newpt,pathi,index) {
+    if(index==0) {
+      river_points[pathi]=[];
+    }
+    river_points[pathi][index] = new google.maps.LatLng(newpt.lat,newpt.lon);
+    river_points[pathi][index].pt = newpt;
 }
 
 /* Click on map event */
@@ -67,19 +77,25 @@ google.maps.event.addListener(map,"click",function(evt) {
     onMapClick(evt.latLng.lat(),evt.latLng.lng());
 });
 
-function addRiverPoints(pts) {
+function addRiverPoints(path_list) {
     //console.log(pts);
+  var pathi;
+  for(pathi=0;pathi<path_list.length;pathi++) {
+    console.log("path#"+pathi);
+    var pts = path_list[pathi];
+    console.log("pts="+pts);
     if (pts.length>0) {
         var i;
         var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(pts[0].lat,pts[0].lon),new google.maps.LatLng(pts[0].lat,pts[0].lon));
         for(i=0;i<pts.length;i++) {
-            addRiverPoint(pts[i],i);
+            addRiverPoint(pts[i],pathi,i);
             bounds.extend(new google.maps.LatLng(pts[i].lat,pts[i].lon));
         }
         map.fitBounds(bounds);
         redrawRiverLine();
         refreshRiverLength();
     }
+  }
 }
 
 getRiver("Var");
