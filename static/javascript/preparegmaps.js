@@ -78,12 +78,11 @@ google.maps.event.addListener(map,"click",function(evt) {
 });
 
 function addRiverPoints(path_list) {
-    //console.log(pts);
   var pathi;
   for(pathi=0;pathi<path_list.length;pathi++) {
-    console.log("path#"+pathi);
+    //console.log("path#"+pathi);
     var pts = path_list[pathi];
-    console.log("pts="+pts);
+    //console.log("pts="+pts);
     if (pts.length>0) {
         var i;
         var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(pts[0].lat,pts[0].lon),new google.maps.LatLng(pts[0].lat,pts[0].lon));

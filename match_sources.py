@@ -8,8 +8,8 @@
 
 # Options
 
-src2_input = ('file','eauxvives_org.json','evo')
-#src2_input = ('mongo','rivermap','rivermap')
+#src2_input = ('file','eauxvives_org.json','evo')
+src2_input = ('mongo','rivermap','rivermap')
 src1_input = ('mongo','rivers')
 #output = ('file','rivers_merged2.json')
 output = ('mongo','rivers_merged')
@@ -21,6 +21,14 @@ BULK_SIZE = 10
 
 # Bad fuzzy matches
 exclude_list = (('Garon', 'La Garonne'),('Volp','Volpajola'),('Rauma','Le Raumartin'),('Ostri','Ostriconi'),('Orb','U Fium Orbu'),('Dore','Dorette'))
+
+#TODO: check:
+#SRC2: Ligne	SRC1: Le Ligneron
+#SRC2: Lieux	SRC1: Le Lieux de Naucelle
+#SRC2: Esca	SRC1: Vieil Escaut
+#SRC2: Ese	SRC1: Rio Esera
+#SRC2: Chasse	SRC1: Le Chassezac
+
 
 # Duplicates and how to handle it
 drac_first = None
@@ -40,6 +48,7 @@ def handleDrac(evo,osm):
         river_output(osm)
 
 src2_dup_list = {'Drac':handleDrac}
+#src2_dup_list = {'Inn':TODO}
 
 unsignificant_tokens = ['Rivière','Ruisseau']
 
@@ -93,6 +102,7 @@ elif src1_input[0]=='mongo':
 else:
     raise Exception('Input type not handled')
 
+# Prepare output
 if output[0]=='file':
     rivers_output = []
     def river_output(river):
@@ -101,11 +111,11 @@ elif output[0]=='mongo':
     bulk = []
     def river_output(river):
         global bulk
-        bulk.append(pymongo.ReplaceOne({'_id':river['_id']},river,upsert=True))
+        bulk.append(pymongo.UpdateOne({'_id':river['_id']},{"$set":river},upsert=True))
         if len(bulk) % BULK_SIZE == 0:
             result = client.wwsupdb[output[1]].bulk_write(bulk)
-            if not(result.modified_count+result.upserted_count == BULK_SIZE):
-                raise Exception("Cannot upsert into mongodb wwsupdb.%s result.modified_count=%s result.upserted_count=%s"%(output[1],result.modified_count,result.upserted_count))
+            #if not(result.modified_count+result.upserted_count == BULK_SIZE):
+            #    raise Exception("Cannot upsert into mongodb wwsupdb.%s result.modified_count=%s result.upserted_count=%s"%(output[1],result.modified_count,result.upserted_count))
             bulk = []
 else:
     raise Exception('Output type not handled')
@@ -143,7 +153,9 @@ for river_src2 in rivers_src2():
             continue
 
         match[1]['name_%s'%src2_input[2]] = name_src2
+        id = match[1]['_id']
         match[1].update(river_src2)
+        match[1]['_id'] = id # keep old _id
         river_output(match[1])
 
     else:
@@ -158,5 +170,5 @@ elif output[0]=='mongo':
     bulk_size = len(bulk)
     if bulk_size > 0:
         result = client.wwsupdb[output[1]].bulk_write(bulk)
-        if not(result.modified_count+result.upserted_count == bulk_size):
-            raise Exception("Cannot upsert into mongodb wwsupdb.%s result.modified_count=%s result.upserted_count=%s"%(output[1],result.modified_count,result.upserted_count))
+        #if not(result.modified_count+result.upserted_count == bulk_size):
+        #    raise Exception("Cannot upsert into mongodb wwsupdb.%s result.modified_count=%s result.upserted_count=%s"%(output[1],result.modified_count,result.upserted_count))

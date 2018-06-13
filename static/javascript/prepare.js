@@ -9,10 +9,10 @@ function Point(lat,lon,previous_pt) {
         this.dist = 0.0;
     }
     else {
-        console.log('plat='+previous_pt.lat); 
+        //console.log('plat='+previous_pt.lat); 
         this.dist = previous_pt.dist + geodeticDist(previous_pt.lat,previous_pt.lon,lat,lon);
     }
-    console.log('thisdist='+this.dist);
+    //console.log('thisdist='+this.dist);
 }
 
 // list of points object, map_type dependant
@@ -296,7 +296,7 @@ function onBuildMapClick() {
 
 
 function refreshGraph() {
-    console.log("refreshGraph");
+    //console.log("refreshGraph");
     profiledata = [];
     var i;
     for(i=0;i<points.length;i++) {
@@ -306,7 +306,7 @@ function refreshGraph() {
 }
 
 function refreshGraphDetail() {
-    console.log("refreshGraphDetail");
+    //console.log("refreshGraphDetail");
     profiledata = [];
     var i;
     for(i=0;i<points.length;i++) {
@@ -399,12 +399,17 @@ function addRiverToMap(river_obj) {
     }
     addRiverPoints(pts);
     current_river = river_obj['name'];
-    console.log(river_obj);
+    //console.log(river_obj);
     var i=-1;
     $("#nb_paths").html(river_obj.paths.length);
     if ("parcours" in river_obj) {
       $("#parcours").html('<ul><li>'+river_obj.parcours.map(function(p) { i++; return p.name + '<ul><li onClick="setEmb(this,\''+current_river+'\','+i+');" class="emb_deb">Emb:'+p.embarquement+'</li><li onClick="setDeb(this,\''+current_river+'\','+i+');" class="emb_deb">Deb:'+p.debarquement+'</li></ul>'; }).join('</li><li>')+'</li></ul>');
     } else {
       $("#parcours").html('<b>No parcours in db</b>');
+    }
+    if ("routes_rivermap" in river_obj) {
+      $("#rivermap").html('Routes present in db');
+    } else {
+      $("#rivermap").html('<b>No routes in db</b>');
     }
 }

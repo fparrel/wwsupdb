@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}{{_('Replay your GPS Tracks with REGEPE - Prepare itinerary')}}{% endblock %}
+{% block title %}{{_('White Water SUP Database prototype')}}{% endblock %}
 {% block urlext %}prepare{% endblock %}
 {% block headext %}<link type="text/css" rel="StyleSheet" href="/static/styles/map.css" />{% endblock %}
 {% block body %}
@@ -20,6 +20,7 @@
                 <div id="map_right">
                     <b>Nb paths:</b> <span id="nb_paths"></span>
                     <h2>Parcours</h2><div id="parcours"></div>
+                    <h2>RiverMap</h2><div id="rivermap"></div>
                     <div id="itiinfos" style="margin-top:10px;"><b>{{_('Length:')}}</b> <span id="length"></span> <b>{{_('D+:')}}</b> <span id="dplus"></span> <b>{{_('D-:')}}</b> <span id="dminus"></span></div>
                 </div>
             </div>
@@ -46,13 +47,13 @@
             </div>-->
 {% endblock %}
 {% block jsext %}
-<script type="text/javascript" src='/static/javascript/raphael-min.js'></script>
-<script type="text/javascript" src='/static/javascript/g.raphael-min.js'></script>
-<script type="text/javascript" src='/static/javascript/g.line-min.js'></script>
 <script type="text/javascript" src="/static/javascript/jquery.js"></script>
 <script type="text/javascript" src="/static/javascript/jquery.flot.js"></script>
+<!--<script type="text/javascript" src='/static/javascript/raphael-min.js'></script>
+<script type="text/javascript" src='/static/javascript/g.raphael-min.js'></script>
+<script type="text/javascript" src='/static/javascript/g.line-min.js'></script>
 <script type="text/javascript" src="/static/javascript/jquery.flot.selection.js"></script>
-<script type="text/javascript" src="/static/javascript/jquery.flot.time.js"></script>
+<script type="text/javascript" src="/static/javascript/jquery.flot.time.js"></script>-->
 {% if map_type=="GMaps" %}
 <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key={{ GMapsApiKey }}"></script>
 {% elif map_type=="GeoPortal" %}
