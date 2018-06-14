@@ -45,6 +45,15 @@ function addPoint(newpt) {
     $.get(url, function() { console.log('done'); } ).fail(function(err){$("#svrresponse").html(err.responseText);});
 }
 
+var rivermap_markers=[];
+function addPointRivermap(newpt,title) {
+    if (!((newpt.lat, newpt.lon) in rivermap_markers)) {
+      rivermap_markers[(newpt.lat, newpt.lon)] = new google.maps.Marker({position: new google.maps.LatLng(newpt.lat, newpt.lon), map: map, draggable: true,label:title});
+    } else {
+      rivermap_markers[(newpt.lat, newpt.lon)].label += title;
+    }
+}
+
 /* Add a given point object to the map */
 function addRiverPoint(newpt,pathi,index) {
     if(index==0) {

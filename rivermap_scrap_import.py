@@ -54,7 +54,7 @@ for a in r.find('abschnitte'):
   if rivers.has_key(a.attrib['fluss']):
     rivers[a.attrib['fluss']]['routes_rivermap'].append(parcours)
   else:
-    rivers[a.attrib['fluss']] = {'_id':a.attrib['fluss'],'name':a.attrib['fluss'],'routes_rivermap':[]}
+    rivers[a.attrib['fluss']] = {'_id':a.attrib['fluss'],'name':a.attrib['fluss'],'routes_rivermap':[parcours]}
 
 # Insert into MongoDB
 import pymongo
