@@ -407,8 +407,13 @@ function addRiverToMap(river_obj) {
     } else {
       $("#parcours").html('<b>No parcours in db</b>');
     }
+    var i=-1;
     if ("routes_rivermap" in river_obj) {
-      $("#rivermap").html('Routes present in db');
+      $("#rivermap").html('<ul><li>'+river_obj.routes_rivermap.map(function(p) { i++; return ''+i+': ' +p.name + ': ' + p.length + ' km '+p.ww_class }).join('</li><li>')+'</li></ul>');
+      for(i=0;i<river_obj.routes_rivermap.length;i++) {
+          addPointRivermap(river_obj.routes_rivermap[i].start,'S'+i);
+          addPointRivermap(river_obj.routes_rivermap[i].end,'E'+i);
+      }
     } else {
       $("#rivermap").html('<b>No routes in db</b>');
     }
