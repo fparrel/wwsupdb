@@ -1,17 +1,14 @@
-#!/usr/bin/env python
 
 #
 # Screen scrap from eauxvives.org and output to a .json file
 #
 
 # To run:
-# scrapy runspider eauxvives_org-scrap.py -o eauxvives_org.json --logfile=eauxvives_org.log
+# scrapy runspider evo_scrap.py -o eauxvives_org.json --logfile=eauxvives_org.log
 
 
 import scrapy
 import urlparse
-import urllib2
-from xml.dom.minidom import parseString
 
 
 def get_contents(tag):
@@ -39,7 +36,7 @@ class BlogSpider(scrapy.Spider):
 
     def parse_river(self, response):
         print 'parse_river %s'%response
-        doc = {'name':response.meta['name']}
+        doc = {'name':response.meta['name'],'src_url':response.url}
         for toextract in ('situation_geographique','presentation','alimentation','periode_favorable','echelle','debit','source_niveaux','niveau_temps_reel','qualite_eau','temperature_eau','risques_particuliers','secours','prestataires_eau_vive','clubs_locaux','bonnes_adresses','bibliographie','web_utiles','reglementation_accords','commentaires'):
             values = response.xpath('//div[contains(@id,"%s-riviere_")]/text()'%toextract).extract()
             if len(values)==1:

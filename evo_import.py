@@ -1,4 +1,14 @@
 #!/usr/bin/env python
+# -*- coding: utf8 -*-
+
+tomerge = {"Ardèche (haute)":"Ardèche",
+           "Ardèche (basse)":"Ardèche",
+           "Ariège (Haute)":"Ariège",
+           "Garonne - Les Roches":"Garonne",
+           'Rhône (entier)':'Rhône',
+           #"Ouvèze de l'ardèche":"Ouvèze",
+           "Ouvèze des Baronnies":"Ouvèze", # chez Evo: "Ouvèze des Baronnies" et "Ouvèze" sont la meme riviere
+           }
 
 import json
 import pymongo
@@ -13,6 +23,10 @@ with open('eauxvives_org.json','r') as f:
 
 rivers_grouped={}
 for river in input:
+    new_name = tomerge.get(river['name'].encode('utf8'))
+    if new_name!=None:
+        river['name'] = new_name
+        #print '"%s"' % river['name'].encode('latin1')
     if river['name'] in rivers_grouped:
         rivers_grouped[river['name']].append(river)
     else:
@@ -20,7 +34,7 @@ for river in input:
 
 for name,rivers in rivers_grouped.iteritems():
     if len(rivers)>1:
-        print 'Duplicate found for', name, ', merging...'
+        #print 'Duplicate found for %s, merging...' % name.encode('utf8')
         assert(len(rivers)==2)
         fields = set([field for field in rivers[0]] + [field for field in rivers[1]])
         new_river = {}

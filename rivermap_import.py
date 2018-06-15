@@ -1,6 +1,15 @@
 #!/usr/bin/env python
+# -*- coding: utf8 -*-
 
 from xml.etree import ElementTree as ET
+
+# Hard codes
+
+tomerge = {"Somvixer Rhein":"Rhein","Alter Rhein":"Rhein","Averser Rhein":"Rhein","Medelser Rhein":"Rhein","Rhin Antérieur (Vorderrhein)":"Rhein","Rhin":"Rhein",
+           "Rhône / Rotten":"Rhône"}
+
+# end of hard codes
+
 
 # Parse xml
 rivermap = ET.parse(open("rivermap_ch_scrap.xml","r"))
@@ -51,10 +60,14 @@ for a in r.find('abschnitte'):
     print 'no station for',parcours['name'].encode('utf8')
     assert(a.attrib['einheit']=='')
   # add to rivers
-  if rivers.has_key(a.attrib['fluss']):
-    rivers[a.attrib['fluss']]['routes_rivermap'].append(parcours)
+  rivername = a.attrib['fluss'].strip()
+  new_rivername = tomerge.get(rivername.encode('utf8'))
+  if new_rivername!=None:
+    rivername = new_rivername
+  if rivers.has_key(rivername):
+    rivers[rivername]['routes_rivermap'].append(parcours)
   else:
-    rivers[a.attrib['fluss']] = {'_id':a.attrib['fluss'],'name':a.attrib['fluss'],'routes_rivermap':[parcours]}
+    rivers[rivername] = {'_id':rivername,'name':rivername,'routes_rivermap':[parcours]}
 
 # Insert into MongoDB
 import pymongo

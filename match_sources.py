@@ -16,10 +16,59 @@ BULK_SIZE = 10
 # Hard codes
 
 # Tokens to be ignored, don't forget the trailing space
-unsignificant_tokens = ("Rivière d'",'Rivière ','Ruisseau ','Le ','La ',"L'")
+unsignificant_tokens = ("Rivière d'",'Rivière ','Ruisseau ','Le ','La ',"L'", "Rio ","Fiume ")
 
 # Bad fuzzy matches
-exclude_list = (('Garon', 'La Garonne'),('Volp','Volpajola'),('Rauma','Le Raumartin'),('Ostri','Ostriconi'),('Orb','U Fium Orbu'),('Dore','Dorette'))
+exclude_list = (('Garon', 'La Garonne'),('Volp','Volpajola'),('Rauma','Le Raumartin'),
+                ('Ostri','Ostriconi'),('Orb','U Fium Orbu'),('Dore','Dorette'),
+                ('Varrados (Rio)','Le Var'),('Saint Bonnette','La Bonne'),
+                ('Rhins','Le Rhin'),
+                ("Lignon de l'Ardèche","L'Ardèche"),("Alignon (du Haut Tarn)","Le Tarn"),
+                ("Chasse","Le Chassezac"),("Hérault de St Guilhem","Le Guil"),
+                ("Our","L'Ourse"),("Lez (d'Ariège)","L'Ariège"),
+                ("Archiane","L'Arc"),("Rivière des Marsouins","Le Mars"),
+                ("Petite Rhue","La Rhue"),
+                ("Guiers Mort","Le Guiers"),
+                ("Guiers Vif","Le Guiers"),
+                ("Portet sur Garonne","La Garonne"),
+                ("Sorgues d'Entraigues","La Sorgue"),
+                ("Dunière","Le Dun"),
+                ("Ese","Rio Esera"),
+                ("Saint-Bonnette","La Bonne"),
+                ("Sava Bohinjka","Sava"),
+                ("Salza","Salzach"),
+                ("Tara","Le Taravo"),
+                ("Vézère de Pérols","La Vézère"),
+                ("Valser Rhein","Rhein"),
+                ("Vézère de Saint-Merd","La Vézère"),
+                ("Neste d'Aure","La Neste"), # Neste du Lauron + Neste d'Aure = Neste
+                ("Neste du Lauron","La Neste"),
+("Grande Nive","Grande"),
+("Grande Eyvia","Grande"),
+("Barossa (Rio)","Rio"),
+                # Below problematic ones (several in evo -> one in osm
+                ("Ouvèze de l'ardèche","L'Ouvèze"), # Ouveze des Baronnies == Ouveze, mais doublon dans osm
+                ("Ouvèze des Baronnies","L'Ouvèze"), # Ouveze des Baronnies == Ouveze, mais doublon dans osm
+                ("Ariège (Haute)","L'Ariège"),
+                ("Garonne - Les Roches","La Garonne"),
+                ("Ardèche (basse)","L'Ardèche"),
+                ('Rhône (entier)','Le Rhône'),
+                ("Ouvèze des Baronnies","L'Ouvèze"),
+                # ckfiumi
+                ("Cant","La Cantache"),
+                ("Varrone","Le Var"),
+                ("Varatella","Le Var"),
+                ("Varaita","Le Var"),
+                ("Vara","Le Var"),
+                ("Garibaldo","Gari"),
+                ("Savenca","La Save"),
+                ("Lima","La Limagne"),
+                ("Po","Rivière de Porto"),
+                ("Riu Leonai","Leo"),
+                ("Varaita","Fiume Vara"),
+                ("Varatella","Fiume Vara"),
+                ("Ogliolo di edolo","Fiume Oglio")
+                )
 
 #TODO: check:
 #SRC2: Ligne	SRC1: Le Ligneron
@@ -104,15 +153,23 @@ def match(src1_input,src2_input,output):
             rivers_output.append(river)
     elif output[0]=='mongo':
         global bulk
+        global updated
+        updated = set([])
         bulk = []
         def river_output(river):
             global bulk
+            if river['_id'] in updated:
+                raise Exception("Already updated %s" % river['_id'].encode(console_encoding))
+            else:
+                updated.add(river['_id'])
             bulk.append(pymongo.UpdateOne({'_id':river['_id']},{"$set":river},upsert=True))
             if len(bulk) % BULK_SIZE == 0:
                 result = client.wwsupdb[output[1]].bulk_write(bulk)
                 #if not(result.modified_count+result.upserted_count == BULK_SIZE):
                 #    raise Exception("Cannot upsert into mongodb wwsupdb.%s result.modified_count=%s result.upserted_count=%s"%(output[1],result.modified_count,result.upserted_count))
                 bulk = []
+        def output_reset():
+            updated = set([])
     else:
         raise Exception('Output type not handled')
 
@@ -137,11 +194,12 @@ def match(src1_input,src2_input,output):
                 match = matches[0]
 
             name_src1 = match
-            if (name_src2,name_src1) in exclude_list:
-                print 'Ignoring bad match SRC2: %s\tSRC1: %s' % (name_src2,name_src1)
+            if (name_src2.encode('utf8'),name_src1.encode('utf8')) in exclude_list:
+                print 'Ignoring bad match SRC2: %s\tSRC1: %s' % (name_src2.encode(console_encoding),name_src1.encode(console_encoding))
                 continue
 
-            print 'SRC2: %s\tSRC1: %s' % (name_src2.encode(console_encoding), name_src1.encode(console_encoding))
+            #print 'SRC2: %s\tSRC1: %s' % (name_src2.encode(console_encoding), name_src1.encode(console_encoding))
+            print '("%s","%s"),' % (name_src2.encode(console_encoding), name_src1.encode(console_encoding))
 
             new_river = river_src1(name_src1)
             assert(new_river!=None)
@@ -165,16 +223,18 @@ def match(src1_input,src2_input,output):
             result = client.wwsupdb[output[1]].bulk_write(bulk)
             #if not(result.modified_count+result.upserted_count == bulk_size):
             #    raise Exception("Cannot upsert into mongodb wwsupdb.%s result.modified_count=%s result.upserted_count=%s"%(output[1],result.modified_count,result.upserted_count))
+    output_reset()
 
 def main():
     if len(sys.argv)==7:
-        match((sys.argv[1],sys.argv[2]),(sys.argv[3],sys.argv[4]),(sys.argv[5],sys.argv[6]))
+        match((sys.argv[1],sys.argv[2]),(sys.argv[3],sys.argv[4],sys.argv[4]),(sys.argv[5],sys.argv[6]))
     elif len(sys.argv)==2 and sys.argv[1] in ('-h','--help'):
         print 'Usage: %s src1type src1 src2type src2 outtype output' % sys.argv[0]
         print 'Example: %s mongo rivers mongo evo mongo rivers_merged' % sys.argv[0]
     else:
         match(('mongo','rivers'),('mongo','evo','evo'),('mongo','rivers_merged'))
         match(('mongo','rivers'),('mongo','rivermap','rivermap'),('mongo','rivers_merged'))
+        match(('mongo','rivers'),('mongo','ckfiumi','ckfiumi'),('mongo','rivers_merged'))
 
 if __name__=='__main__':
     main()
