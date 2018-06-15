@@ -402,6 +402,9 @@ function addRiverToMap(river_obj) {
     //console.log(river_obj);
     var i=-1;
     $("#nb_paths").html(river_obj.paths.length);
+    if ("presentation" in river_obj) {
+      $("#presentation").html(river_obj.presentation);
+    }
     if ("parcours" in river_obj) {
       $("#parcours").html('<ul><li>'+river_obj.parcours.map(function(p) { i++; return p.name + '<ul><li onClick="setEmb(this,\''+current_river+'\','+i+');" class="emb_deb">Emb:'+p.embarquement+'</li><li onClick="setDeb(this,\''+current_river+'\','+i+');" class="emb_deb">Deb:'+p.debarquement+'</li></ul>'; }).join('</li><li>')+'</li></ul>');
     } else {
