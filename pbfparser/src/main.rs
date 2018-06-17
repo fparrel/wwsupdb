@@ -2,7 +2,7 @@ extern crate osm_pbf_iter;
 extern crate num_cpus;
 extern crate serde;
 #[macro_use] extern crate serde_derive;
-extern crate bson;
+#[macro_use(bson, doc)] extern crate bson;
 extern crate mongodb;
 
 use std::env::args;
@@ -75,7 +75,7 @@ fn blobs_worker(req_rx: Receiver<Blob>, res_tx: SyncSender<PayLoad>) {
                          if k=="name" {
                              name = v;
                          }
-                         if k=="waterway" && v=="river" {
+                         if k=="waterway" && (v=="river" || v=="stream") {
                              is_river = true;
                          }
                     }
@@ -294,7 +294,23 @@ fn main() {
             match serialized_river {
                 Ok(sr) => {
                     if let bson::Bson::Document(docu) = sr { // Documentize
-                        bulk.push(WriteModel::InsertOne { document: docu });
+                        bulk.push(WriteModel::UpdateOne { filter: doc!{"_id": name.to_string()},
+                                                          update: doc!{"$set": docu},
+                                                          upsert: Some(true) });
+                        //bulk.push(WriteModel::InsertOne { document: docu });
+                        //bulk.push(docu);
+                        if bulk.len()>100 {
+                            println!("Insert into db... {}",bulk.len());
+                            let result = rivers_coll.bulk_write(bulk.clone(), true);
+                            println!("Number of rivers inserted: ins:{} match:{} modif:{} del:{} upset:{}",result.inserted_count,result.matched_count,result.modified_count,result.deleted_count,result.upserted_count);
+                            //println!("Write errors: {}",result.bulk_write_exception.unwrap().write_errors.len());
+                            match result.bulk_write_exception {
+                                Some(exception) => println!("OK: {}",exception.message),
+                                None => println!("ERROR")
+                            };
+                            //rivers_coll.insert_many(bulk.clone(), None).expect("Failed to insert documents.");
+                            bulk.clear();
+                        }
                     } else {
                         println!("Error converting the BSON object into a MongoDB document");
                     }
@@ -303,9 +319,15 @@ fn main() {
             }
         }
 
-        println!("Insert into db...");
+        println!("Insert into db... {}",bulk.len());
+        //rivers_coll.insert_many(bulk, None).expect("Failed to insert documents.");
+        //println!("result = {}", result);
         let result = rivers_coll.bulk_write(bulk, true); // Insert
-        println!("Number of rivers inserted: {}",result.inserted_count);
+        println!("Number of rivers inserted: ins:{} match:{} modif:{} del:{} upset:{}",result.inserted_count,result.matched_count,result.modified_count,result.deleted_count,result.upserted_count);
+        match result.bulk_write_exception {
+            Some(exception) => println!("OK: {}",exception.message),
+            None => println!("ERROR")
+        };
 
         // Get duration
         let stop = Instant::now();
