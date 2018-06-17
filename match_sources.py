@@ -10,6 +10,8 @@
 
 print_not_found = True
 #print_not_found = False
+exact_match = True
+#exact_match = False
 console_encoding = 'utf8' #latin1 on Windows
 BULK_SIZE = 10
 
@@ -46,6 +48,13 @@ exclude_list = (('Garon', 'La Garonne'),('Volp','Volpajola'),('Rauma','Le Raumar
 ("Grande Nive","Grande"),
 ("Grande Eyvia","Grande"),
 ("Barossa (Rio)","Rio"),
+("Rushia","Le Ru"),
+("Ruetzbach","Le Ru"),
+("Rutor","Le Ru"), 
+("Rußbach","Le Ru"),
+("Bras de la Plaine","La Plaine"),
+("Reuss","Le Reu"),
+("Göschener Reuss","Le Reu"),
                 # Below problematic ones (several in evo -> one in osm
                 ("Ouvèze de l'ardèche","L'Ouvèze"), # Ouveze des Baronnies == Ouveze, mais doublon dans osm
                 ("Ouvèze des Baronnies","L'Ouvèze"), # Ouveze des Baronnies == Ouveze, mais doublon dans osm
@@ -78,6 +87,9 @@ exclude_list = (('Garon', 'La Garonne'),('Volp','Volpajola'),('Rauma','Le Raumar
 #SRC2: Chasse	SRC1: Le Chassezac
 #SRC2: Loire 	SRC1: La Loire - Bras de Pirmil
 
+#already_updated: L,rio,Le Garon,L,L,L,L'Orb,Le Lan,L'Isard,Le Lignon,Le Foron,L,L,rio,L,Le Lan,L'Arre,L'Hérault,Rio Lot,Rio Grande,Rio Rio,L,L'Ur,L,L,Le Sal,L,Rio Ri,Le Sal,L'Ur,La Dordogne,La Nogue,La Nogue,La Sioule,Le Dadou
+#already_updated: L,Schwarzach,Rio Rin,Rotbach,La Vis,L,Bist,L,L,L'Orb,L'Arac,Le Lignon,La Weiss,L,Rio Re,L'Ur,Rio Men,Rio Ber,Bist,Le Talbach,L,L,L,L'Ur,La Weiss,Rio Val,L,Rio Re,L,Rio Rin,Rio Ser,L,Rettenbach,Le Dadou,L,L,Rio Sta,Rio Re,Po,Schwarzwasser
+#already_updated: Fiume Calore,Gesso,Rio Noce,Taro,Gesso,L,Strona,Po,Rio Valle,Torrente,Rio Turrite,L,Rivière d'Argent,Verde,Bidente,Fiume Brembo,Gesso,Bormida,Orba,La Tave,Fiume Rabbi
 
 # End of Hard codes
 
@@ -128,7 +140,7 @@ def open_source(src_input):
     return river_names_src,river_src
 
 def clean4fuzzy(i):
-    return unicode(remove_tokens(i.encode('utf8'),unsignificant_tokens),encoding='utf8')
+    return unicode(remove_tokens(i.encode('utf8'),unsignificant_tokens).lower(),encoding='utf8')
 
 def match(src1_input,src2_input,output):
 
@@ -155,11 +167,14 @@ def match(src1_input,src2_input,output):
         global bulk
         global updated
         updated = set([])
+        already_updated = []
         bulk = []
         def river_output(river):
             global bulk
             if river['_id'] in updated:
-                raise Exception("Already updated %s" % river['_id'].encode(console_encoding))
+                already_updated.append(river['_id'])
+                return
+                #raise Exception("Already updated %s" % river['_id'].encode(console_encoding))
             else:
                 updated.add(river['_id'])
             bulk.append(pymongo.UpdateOne({'_id':river['_id']},{"$set":river},upsert=True))
@@ -169,6 +184,7 @@ def match(src1_input,src2_input,output):
                 #    raise Exception("Cannot upsert into mongodb wwsupdb.%s result.modified_count=%s result.upserted_count=%s"%(output[1],result.modified_count,result.upserted_count))
                 bulk = []
         def output_reset():
+            print 'already_updated:',','.join(map(lambda r:r.encode(console_encoding),already_updated))
             updated = set([])
     else:
         raise Exception('Output type not handled')
@@ -180,8 +196,12 @@ def match(src1_input,src2_input,output):
 
         # First try to match with partial_ratio (example: 'The Big River" = "Big River")
         for name_src1 in river_names_src1():
-            if fuzz.partial_ratio(clean4fuzzy(name_src2),clean4fuzzy(name_src1)) == 100:
-                matches.append(name_src1)
+            if exact_match:
+                if clean4fuzzy(name_src2)==clean4fuzzy(name_src1):
+                    matches.append(name_src1)
+            else:
+                if fuzz.partial_ratio(clean4fuzzy(name_src2),clean4fuzzy(name_src1)) == 100:
+                    matches.append(name_src1)
 
         if len(matches)>0:
 

@@ -41,7 +41,7 @@ def main():
                 rivers[clean4fuzzy(river["_id"])] = {"name_rivermap":river["_id"]}
             else:
                 rivers[clean4fuzzy(river["_id"])]["name_rivermap"]=river["_id"]
-    # get remaining rivermap rivers
+    # get remaining ckfiumi rivers
     for river in db.rivermap.find({},{"_id":1}):
         cptrs['ckfiumi']+=1
         if river["_id"] not in names_rivermap:
