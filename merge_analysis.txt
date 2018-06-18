@@ -1,0 +1,76 @@
+EVO:
+
+Abeau: ajouté osm
+Acheron: Grèce
+Affric: Ecosse
+Agout: ajouté osm
+Alareks: arménie
+Alb: allemagne
+Alignon (du Haut Tarn): ajouté osm + manual matches
+Alt_a_Choruinn: Ecosse
+Ammer: allemagne
+Aoos: Grèce
+Apurimac: Pérou
+Ara (rio): Espagne
+Arga (rio): Espagne
+Assif Meloul: Maroc
+Barossa (Rio): Espagne
+Beartzun: Espagne
+Behine: manual matches
+Rio Bellos (Vellos) Canyon de Anisclo: Espagne
+Besorgues: manual matches
+Beça: Portugal
+Bialka: Pologne
+Bonaigua: Espagne
+boralde d'Espalion: ? Boralde Flaujaguèse + La Boralde de Flaujac
+Borrey: mm (L'Oignin)
+Bramabiau: mm (Le Bonheur)
+Brandenberger Ache: Autriche
+Brandsetelva: Norvège
+Bras de la Plaine: Réunion
+Brezou: mm
+Brugent: Espagne
+Brézillou: mm
+Bés: mm
+Calancasca: Suisse
+Calasima: ajouté osm
+Canadelle: ajouté osm
+Candessoubre: mm(Ruisseau de Candesoubre)
+Canut de Renac: mm
+canyon creek: USA
+Castro Laboreiro: Portugal
+Rio Cavado: Portugal
+Cinca: Espagne
+Cinqueta: Espagne
+Clare Glens: Irlande
+Colagne (Haute): mm(La Colagne)
+Combe Jean: ajout osm + mm(Ruisseau de Combejean)
+Corrèze de Pradines: mm(La Petite Corrèze)
+COSCIONE: mm(Le Chiuvone)
+Courbiere: mm(Ruisseau de la Courbière)
+Courtignou (Ruisseau de): corrected
+Couze de valbeleix: mm(La Couze du Valbeleix)
+Crisul Pietros: Roumanie
+Crueize (ou Gorges de l'Enfer): mm(La Crueize)
+Cruzzini: ajouté osm
+Dadounet: ajouté osm
+Defereggenbach (Schwarzach): Autriche
+Deiro: ajouté osm
+Dordogne (basse): mm
+Douyge: ajouté osm
+Dranse d'Entremont et de Martigny: Suisse
+Rivière du Mat: Réunion
+Dzoraget: Arménie
+Débed: Arménie
+Elorn: mm
+Engstlige: Suisse
+Enns: Autriche
+Entlen: Suisse
+Erco: ajouté osm
+Erimànthos: grèce
+Esca: Espagne
+Escalés: ajouté osm
+Escaumel: mm(Ruisseau d'Escalmels)
+Espezonette: mm(L'Espézonnette)
+Rivière d'Etel: mm(Rivière d'Étel)
+etive: Ecosse

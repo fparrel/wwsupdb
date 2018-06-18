@@ -10,15 +10,12 @@
 
 print_not_found = True
 #print_not_found = False
-exact_match = True
-#exact_match = False
+#exact_match = True
+exact_match = False
 console_encoding = 'utf8' #latin1 on Windows
 BULK_SIZE = 10
 
 # Hard codes
-
-# Tokens to be ignored, don't forget the trailing space
-unsignificant_tokens = ("Rivière d'",'Rivière ','Ruisseau ','Le ','La ',"L'", "Rio ","Fiume ")
 
 # Bad fuzzy matches
 exclude_list = (('Garon', 'La Garonne'),('Volp','Volpajola'),('Rauma','Le Raumartin'),
@@ -91,23 +88,16 @@ exclude_list = (('Garon', 'La Garonne'),('Volp','Volpajola'),('Rauma','Le Raumar
 #already_updated: L,Schwarzach,Rio Rin,Rotbach,La Vis,L,Bist,L,L,L'Orb,L'Arac,Le Lignon,La Weiss,L,Rio Re,L'Ur,Rio Men,Rio Ber,Bist,Le Talbach,L,L,L,L'Ur,La Weiss,Rio Val,L,Rio Re,L,Rio Rin,Rio Ser,L,Rettenbach,Le Dadou,L,L,Rio Sta,Rio Re,Po,Schwarzwasser
 #already_updated: Fiume Calore,Gesso,Rio Noce,Taro,Gesso,L,Strona,Po,Rio Valle,Torrente,Rio Turrite,L,Rivière d'Argent,Verde,Bidente,Fiume Brembo,Gesso,Bormida,Orba,La Tave,Fiume Rabbi
 
+#Alareks = arménie, 
+
 # End of Hard codes
 
 
 import json
 import sys
 from fuzzywuzzy import fuzz
-
-def remove_tokens(s,tokens):
-    for token in tokens:
-        i = 0
-        while i>-1:
-            #i = unicode(s).find(unicode(token,encoding='utf8'))
-            i = s.find(token)
-            if i>-1:
-                s=s[:i]+s[i+len(token):]
-    return s
-
+from text_utils import clean4fuzzy
+from manual_matches import manual_matches
 
 def open_source(src_input):
     if src_input[0]=='file':
@@ -138,9 +128,6 @@ def open_source(src_input):
     else:
         raise Exception('Input type not handled')
     return river_names_src,river_src
-
-def clean4fuzzy(i):
-    return unicode(remove_tokens(i.encode('utf8'),unsignificant_tokens).lower(),encoding='utf8')
 
 def match(src1_input,src2_input,output):
 
@@ -202,6 +189,10 @@ def match(src1_input,src2_input,output):
             else:
                 if fuzz.partial_ratio(clean4fuzzy(name_src2),clean4fuzzy(name_src1)) == 100:
                     matches.append(name_src1)
+
+        mm = manual_matches[src2_input[1]].get(name_src2)
+        if mm!=None:
+            matches = [mm]
 
         if len(matches)>0:
 

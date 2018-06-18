@@ -15,6 +15,7 @@ def main():
     names_evo=[]
     names_rivermap=[]
     cptrs = {'osm':0,'evo':0,'rivermap':0,'ckfiumi':0,'merged':0}
+    not_merged = {'evo':[],'rivermap':[],'ckfiumi':[]}
     # get merged rivers
     for river in db.rivers_merged.find({},{"_id":1,"name_evo":1,"name_rivermap":1}):
         cptrs['merged']+=1
@@ -31,6 +32,7 @@ def main():
         if river["_id"] not in names_evo:
             if river["_id"] not in rivers:
                 rivers[clean4fuzzy(river["_id"])] = {"name_evo":river["_id"]}
+                not_merged['evo'].append((clean4fuzzy(river["_id"]),river["_id"]))
             else:
                 rivers[clean4fuzzy(river["_id"])]["name_evo"]=river["_id"]
     # get remaining rivermap rivers
@@ -39,6 +41,7 @@ def main():
         if river["_id"] not in names_rivermap:
             if river["_id"] not in rivers:
                 rivers[clean4fuzzy(river["_id"])] = {"name_rivermap":river["_id"]}
+                not_merged['rivermap'].append((clean4fuzzy(river["_id"]),river["_id"]))
             else:
                 rivers[clean4fuzzy(river["_id"])]["name_rivermap"]=river["_id"]
     # get remaining ckfiumi rivers
@@ -47,6 +50,7 @@ def main():
         if river["_id"] not in names_rivermap:
             if river["_id"] not in rivers:
                 rivers[clean4fuzzy(river["_id"])] = {"name_ckfiumi":river["_id"]}
+                not_merged['ckfiumi'].append((clean4fuzzy(river["_id"]),river["_id"]))
             else:
                 rivers[clean4fuzzy(river["_id"])]["name_ckfiumi"]=river["_id"]
     # get remaining osm rivers
@@ -60,12 +64,23 @@ def main():
     # Display rivers by alphabetical order
     names = rivers.keys()
     names.sort()
-    print '<!DOCTYPE html>'
-    print '<html><head><style>table, th, td {border: 1px solid black;}</style><meta http-equiv="Content-Type" content="text/html; charset=utf8" /></head><body><b>Merged: %s</b><table><tr><th>cleaned name %s</th><th>evo %s</th><th>rivermap %s</th><th>ckfiumi %s</th><th>osm %s</th></tr>' % (cptrs['merged'],len(names),cptrs['evo'],cptrs['rivermap'],cptrs['ckfiumi'],cptrs['osm'])
+    f = open('sources.html','w')
+    f.write('<!DOCTYPE html>\n')
+    f.write('<html><head><style>table, th, td {border: 1px solid black;}</style><meta http-equiv="Content-Type" content="text/html; charset=utf8" /></head><body><b>Merged: %s</b><table><tr><th>cleaned name %s</th><th>evo %s</th><th>rivermap %s</th><th>ckfiumi %s</th><th>osm %s</th></tr>' % (cptrs['merged'],len(names),cptrs['evo'],cptrs['rivermap'],cptrs['ckfiumi'],cptrs['osm']))
     for name in names:
         sources = rivers[name]
-        print '<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>'% (name.encode('utf8'),none_or_encode(sources.get('name_evo')),none_or_encode(sources.get('name_rivermap')),none_or_encode(sources.get('name_ckfiumi')),none_or_encode(sources.get('name_osm')))
-    print '</table></body></html>'
+        f.write('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>'% (name.encode('utf8'),none_or_encode(sources.get('name_evo')),none_or_encode(sources.get('name_rivermap')),none_or_encode(sources.get('name_ckfiumi')),none_or_encode(sources.get('name_osm'))))
+    f.write('</table></body></html>')
+    f.close()
+    for src in not_merged:
+        f = open('notmerged_%s.html'%src,'w')
+        f.write('<!DOCTYPE html>\n')
+        f.write('<html><head><style>table, th, td {border: 1px solid black;}</style><meta http-equiv="Content-Type" content="text/html; charset=utf8" /></head><body><b>Count: %s / %s</b><table><tr><th>cleaned name</th><th>name</th></tr>' % (len(not_merged[src]),cptrs[src]))
+        not_merged[src].sort()
+        for cleaned_name,name in not_merged[src]:
+            f.write('<tr><td>%s</td><td>%s</td></tr>'%(cleaned_name.encode('utf8'),name.encode('utf8')))
+        f.write('</table></body></html>')
+        f.close()
 
 if __name__=='__main__':
     main()

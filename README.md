@@ -35,8 +35,8 @@ cargo build --release
 ./ckfiumi_scrap.sh
 # Import ckfiumi data into MongoDB
 ./ckfiumi_import.py
-# Match evo and osm data in MongoDB
-./match_evo_osm.py
+# Match evo, rivermap and ckfiumi with osm data in MongoDB
+./match_sources_exact.py
 # Check sources matching
 ./check_match_sources.py > sources.html
 firefox sources.html &

@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 
-from match_sources import clean4fuzzy,manual_matches
+from text_utils import clean4fuzzy
+from manual_matches import manual_matches
 import pymongo
 
 db = pymongo.MongoClient().wwsupdb
