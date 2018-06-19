@@ -1,2 +1,4 @@
-scrapy runspider evo_scrap.py -o eauxvives_org.json --logfile=eauxvives_org.log
-
+rm evo.json
+rm evo.log
+scrapy runspider evo_scrap.py -o evo.json --logfile=evo.log
+grep log_count evo.log

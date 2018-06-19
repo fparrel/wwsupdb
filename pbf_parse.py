@@ -34,10 +34,12 @@ class RiversParser(object):
         for osm_id, lon, lat in coords:
             print osm_id
             self.coords[osm_id] = (lat, lon)
+    def nodes(self, nodes):
+        print 'nodes'
 
 # instantiate counter and parser and start parsing
 rivers_parser = RiversParser()
-p = OSMParser(concurrency=4, ways_callback=rivers_parser.ways, coords_callback=rivers_parser.coords)
+p = OSMParser(concurrency=4, ways_callback=rivers_parser.ways, coords_callback=rivers_parser.coords, nodes_callback=rivers_parser.nodes)
 print 'Parsing... %s' % datetime.datetime.now()
 p.parse(input_filename)
 

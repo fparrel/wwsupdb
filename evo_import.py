@@ -18,7 +18,7 @@ collection = pymongo.MongoClient().wwsupdb.evo
 def insert(id,river):
     collection.update({'_id':id},river,upsert=True)
 
-with open('eauxvives_org.json','r') as f:
+with open('evo.json','r') as f:
     input = json.load(f)
 
 rivers_grouped={}
@@ -50,5 +50,5 @@ for name,rivers in rivers_grouped.iteritems():
         assert(len(rivers)==1)
         new_river = rivers[0]
     # sort 'parcours' by name
-    new_river['parcours'].sort(key=lambda x:x['name'])
+    #new_river['parcours'].sort(key=lambda x:x['name'])
     insert(name,new_river)
