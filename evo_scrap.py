@@ -50,30 +50,18 @@ class BlogSpider(scrapy.Spider):
             else:
                 print '%s: cannot extract %s-riviere: len=%s'%(response,toextract,len(values))
             doc['alternatives_navigation'] = [alt for alt in response.css('#alternatives_de_navigation > li').xpath('text()').extract()]
-        doc['parcours'] = {}
         parcours=[]
         for i in range(0,20):
             r = response.css('#p%d'%i)
-            if len(r)==1:
-                doc['parcours']['P%d'%i] = {}
-                parcours.append('P%d'%i)
-            elif len(r)==0:
-                pass
-            else:
-                raise Exception('More than 1 parcours with same name')
-        for toextract in ('nom_site','cotation','embarquement','debarquement','presentation','physionomie','pente_moyenne','logistique','paysage','isolement','playboating','duree','guide_kilometrique','date_derniere_descente'):
-            values = response.xpath('//div[contains(@id,"%s-parcours_")]'%(toextract)).extract()
-            if len(values)!=len(parcours):
-                raise Exception('%s %d %d',(response,len(values),len(parcours)))
-            i=0
-            for value in values:
-                doc['parcours'][parcours[i]][toextract]=get_contents(value)
-                doc['parcours'][parcours[i]]['name']=parcours[i]
-                i+=1
+            if r:
+                #print 'parcours',i
+                parcour = {'name': 'P%d'%i}
+                for toextract in ('nom_site','cotation','embarquement','debarquement','presentation','physionomie','pente_moyenne','logistique','paysage','isolement','playboating','duree','guide_kilometrique','date_derniere_descente'):
+                    value = r.css('div[id*="%s-parcours_"]'%(toextract)).extract_first()
+                    parcour[toextract] = get_contents(value)
+                parcours.append(parcour)
+        doc['parcours'] = parcours
         #TODO: commentaires
-        for parcour in doc['parcours']:
-            doc['parcours'][parcour].update({'name':parcour})
-        doc['parcours'] = doc['parcours'].values()
         yield doc
 
 if __name__=='__main__':
