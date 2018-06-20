@@ -23,20 +23,29 @@ class BlogSpider(scrapy.Spider):
     def parse(self, response):
         print 'parse %s'%response
         cptr=0
-        for i in response.css('.nom_site'):
-            name = i.xpath('a/text()').extract()[0] #.encode('utf8')
-            href = i.css('a::attr(href)').extract()[0]
-            print name.encode('utf8'),href
+
+        #yield scrapy.Request('http://www.eauxvives.org/en/rivieres/voir/daronne', callback=self.parse_river, meta={})
+        #return
+
+        for tr in response.css('.liste_sites tr'):
+            name = tr.css('.nom_site').xpath('a/text()').extract_first()
+            href = tr.css('.nom_site a::attr(href)').extract_first()
+            place = tr.css('td:nth-child(even)').xpath('text()').extract_first()
+            situation = map(lambda x:x.strip(),place.split('>'))
             full_url = urlparse.urljoin(response.url, href)
-            infos = scrapy.Request(full_url, callback=self.parse_river, meta={'name':name})
             cptr+=1
-            #if cptr==10:
-            #    break
-            yield infos
+            print name,href,situation
+            yield scrapy.Request(full_url, callback=self.parse_river, meta={'name':name,'situation':situation})
 
     def parse_river(self, response):
         print 'parse_river %s'%response
-        doc = {'name':response.meta['name'],'src_url':response.url}
+        # Ignore some pages
+        if response.url=='http://www.eauxvives.org/en/rivieres/voir/cartes-des-pyrenees':
+            return
+        # Add info already got
+        doc = {'src_url':response.url}
+        doc.update(response.meta)
+        # Extract general infos
         for toextract in ('situation_geographique','presentation','alimentation','periode_favorable','echelle','debit','source_niveaux','niveau_temps_reel','qualite_eau','temperature_eau','risques_particuliers','secours','prestataires_eau_vive','clubs_locaux','bonnes_adresses','bibliographie','web_utiles','reglementation_accords','commentaires'):
             values = response.xpath('//div[contains(@id,"%s-riviere_")]/text()'%toextract).extract()
             if len(values)==1:

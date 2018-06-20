@@ -4,27 +4,36 @@
 from text_utils import clean4fuzzy
 from manual_matches import manual_matches
 import pymongo
+from pprint import pprint
 
 db = pymongo.MongoClient().wwsupdb
 bulk = []
 
-def merge(src1,id_src1,src2,id_src2):
+def merge(src1,id_src1,src2,id_src2_input):
   global bulk
   doc1 = db[src1].find_one({"_id":id_src1})
   if doc1==None:
     print '%s not found'%id_src1.encode('utf8')
     return
-  doc2 = db[src2].find_one({"_id":id_src2})
-  if doc2==None:
-    print '%s not found'%id_src2.encode('utf8')
-    return
-  doc2.update(doc1)
-  doc2["_id"]=id_src2
-  doc2["name_%s"%src1]=id_src1
-  bulk.append(pymongo.UpdateOne({'_id':id_src2},{"$set":doc2},upsert=True))
-  if len(bulk)>100:
-    db['rivers_merged'].bulk_write(bulk)
-    bulk = []
+  if not isinstance(id_src2_input,list):
+    id_src2_input = [id_src2_input]
+  for id_src2 in id_src2_input:
+    doc2 = db[src2].find_one({"_id":id_src2})
+    if doc2==None:
+      print '%s not found'%id_src2.encode('utf8')
+      return
+    new_doc = {}
+    new_doc.update(doc1)
+    new_doc.update(doc2)
+    new_doc["name_%s"%src1]=id_src1
+    bulk.append(pymongo.UpdateOne({'_id':id_src2},{"$set":new_doc},upsert=True))
+    if len(bulk)>100:
+      try:
+        result = db['rivers_merged'].bulk_write(bulk)
+      except pymongo.errors.BulkWriteError,e:
+        pprint(e.details)
+        raise Exception(e)
+      bulk = []
 
 def flush():
   global bulk
@@ -53,6 +62,6 @@ for name,fullname in allnames:
 
 for src in manual_matches:
   for id1,id2 in manual_matches[src].iteritems():
-    print src,id1,'rivers',id2
+    #print src,id1,'rivers',id2
     merge(src,id1,'rivers',id2)
 flush()

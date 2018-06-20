@@ -12,6 +12,7 @@ tomerge = {"Ardèche (haute)":"Ardèche",
 
 import json
 import pymongo
+from pprint import pprint
 
 collection = pymongo.MongoClient().wwsupdb.evo
 
@@ -34,18 +35,29 @@ for river in input:
 
 for name,rivers in rivers_grouped.iteritems():
     if len(rivers)>1:
-        #print 'Duplicate found for %s, merging...' % name.encode('utf8')
-        assert(len(rivers)==2)
-        fields = set([field for field in rivers[0]] + [field for field in rivers[1]])
-        new_river = {}
-        for field in fields:
-            if rivers[0].has_key(field) and rivers[1].has_key(field) and rivers[0][field]!=rivers[1][field]:
-                new_value = rivers[0][field] + rivers[1][field]
-            elif rivers[0].has_key(field):
-                new_value = rivers[0][field]
-            elif rivers[1].has_key(field):
-                new_value = rivers[1][field]
-            new_river[field] = new_value
+        #pprint(name)
+        try:
+            name_unicode = name.decode('utf8',errors='ignore')
+        except:
+            name_unicode = name.replace(u'\xe8','e').decode('utf8',errors='ignore')
+        name_utf8 = name_unicode.encode('utf8')
+        print '%d duplicates found for %s, merging...' % (len(rivers),name_utf8)
+        new_river = {"duplicates":rivers}
+        #~ fields = set([])
+        #~ for river in rivers:
+            #~ fields.union([field for field in river])
+        #~ assert(len(rivers)==2)
+        #~ new_river = {}
+        #~ for field in fields:
+            #~ for river in rivers:
+                
+            #~ if rivers[0].has_key(field) and rivers[1].has_key(field) and rivers[0][field]!=rivers[1][field]:
+                #~ new_value = rivers[0][field] + rivers[1][field]
+            #~ elif rivers[0].has_key(field):
+                #~ new_value = rivers[0][field]
+            #~ elif rivers[1].has_key(field):
+                #~ new_value = rivers[1][field]
+            #~ new_river[field] = new_value
     else:
         assert(len(rivers)==1)
         new_river = rivers[0]

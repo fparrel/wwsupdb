@@ -1,3 +1,5 @@
+#TODO: several topos, rivers on different pbf files, verifier Nive
+
 EVO:
 
 Abeau: ajouté osm
@@ -74,3 +76,79 @@ Escaumel: mm(Ruisseau d'Escalmels)
 Espezonette: mm(L'Espézonnette)
 Rivière d'Etel: mm(Rivière d'Étel)
 etive: Ecosse
+falloch: Ecosse
+Fermersbach: Allemagne
+Fildrich: Suisse
+Fium Grosso: mm(Rivière de Guagno + Liamone) # Liamone deja autre topo
+Fium Orbo: mm(U Fium Orbu)
+Flamicelli: Espagne
+Flesk: Irlande
+Rio Forcos: Espagne
+Foron de Sciez: mm(Le Foron) #nombreux homonymes
+Foron de Taninges: mm(Le Foron) #nombreux homonymes
+Fraissinet: ajouté osm
+Furkareuss: Suisse
+Rio Gallégo: Espagne
+Gardon de St Martin de Lansuscle: mm(Le Gardon) #nombreux homonymes
+Gardon sans nom: mm + ajout osm
+Garona: Espagne
+Gasvasselva: Norvège
+Gave d'Arrens: mm(Le Gave d'Azun)
+Gave d'Aydius: mm
+Gave de Cauteret: mm
+Gave de Larrau-Saison: mm
+Gave de Sainte Engrâce: mm(Uhaïtza)
+Gave du Lourdios: mm(Le Gave de Lourdios)
+Glane de Malesse: ajouté osm
+Glenner: Suisse
+Glueyre: mm
+Gottero: mm
+Gottleuba: Allemagne
+Gourdouze: mm + ajout osm
+Grande Blourde: mm
+Grande Eyvia: mm
+Grande Nive: mm
+Gravone: mm
+Gschnitzbach: Autriche
+Guichard: mm
+Heas (gave d'): mm
+hyeres: mm
+Hérault de St Guilhem: mm
+Iaroka: Madagascar
+Iraty: Espagne
+Rio Irues: Espagne
+Isar: Autriche
+Jacques-Cartier: Canada
+Jizera: Rep Techque
+Jondachi: Equateur
+Joéu: Espagne
+Kamienna: Pologne
+Kiene: Suisse
+Kleine Emme: Suisse
+Lammer: Autriche
+Landquart: Suisse
+Rivière Langevin: Réunion
+Langougnole: ajouté osm
+Larot: ajouté osm
+Lauenenbach: Suisse
+Leguer: mm
+Leizaran: Esoagne
+Leny: Ecosse
+Lesse: Belgique
+Leyre: mm
+Lez (d'Ariège): mm #homonymes
+Lignon de l'Ardèche: mm #homonymes
+Lignon du Forez: mm #homonymes
+Lignon du Velay: mm #homonymes
+Lilly: Madagascar
+Lizola: mm
+Ruisseau de loubanère: code fixed
+
+Louredo: Portugal
+Louros: Grèce
+Lousios: Grèce
+Lyon: Ecosse
+Malzac: mm
+Mataroni: Guyanne
+Mayenne (haute): mm
+Medelsbach: Suisse

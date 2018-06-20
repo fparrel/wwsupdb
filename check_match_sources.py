@@ -27,12 +27,15 @@ def main():
             names_rivermap.append(river["name_rivermap"])
         rivers[clean4fuzzy(river["_id"])] = river
     # get remaining evo rivers
-    for river in db.evo.find({},{"_id":1}):
+    for river in db.evo.find({},{"_id":1,"situation.0":"country"}):
         cptrs['evo']+=1
         if river["_id"] not in names_evo:
             if river["_id"] not in rivers:
                 rivers[clean4fuzzy(river["_id"])] = {"name_evo":river["_id"]}
-                not_merged['evo'].append((clean4fuzzy(river["_id"]),river["_id"]))
+                if river['country'] in ('France','Italie'):
+                    not_merged['evo'].append((clean4fuzzy(river["_id"]),river["_id"]))
+                else:
+                    print 'Ignoring %s in %s' % (river["_id"].encode('utf8'), country.encode('utf8'))
             else:
                 rivers[clean4fuzzy(river["_id"])]["name_evo"]=river["_id"]
     # get remaining rivermap rivers
