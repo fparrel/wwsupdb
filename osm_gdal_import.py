@@ -10,6 +10,8 @@ def get_rivers(fname):
 
     gdal.SetConfigOption('OGR_INTERLEAVED_READING', 'YES')
     osm = ogr.Open(fname)
+    if osm==None:
+        raise Exception("Cannot open %s"%fname)
 
     # Grab available layers in file
     nLayerCount = osm.GetLayerCount()
@@ -50,8 +52,17 @@ def get_rivers(fname):
 
 
 collection.drop()
+bulk = []
 for fname in os.listdir('data_osm_pbf') + os.listdir('data_osm_pbf_italy'):
     if fname.endswith('.osm.pbf'):
         print fname
         for name,path in get_rivers('data_osm_pbf/%s'%fname):
-            collection.update({"_id":name},{"$push":{"paths":path}},upsert=True)
+            bulk.append(pymongo.UpdateOne({'_id':name},{"$push":{"paths":path}},upsert=True))
+            if len(bulk)>100:
+                try:
+                    collection.bulk_write(bulk)
+                except pymongo.errors.BulkWriteError,e:
+                    pprint(e.details)
+                    raise Exception(e)
+                bulk = []
+collection.bulk_write(bulk)
