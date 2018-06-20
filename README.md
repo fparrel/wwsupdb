@@ -8,6 +8,14 @@ White Water Standup Paddling Database. Get data from different sources, tries to
 * rivermap.ch
 
 ## Quick start
+### Install stuff
+```
+# Cargo + rust
+curl https://sh.rustup.rs -sSf | sh
+source $HOME/.cargo/env
+#
+```
+### Use
 ```
 # Clone
 git clone https://github.com/fparrel/wwsupdb
