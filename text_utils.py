@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 
 # Tokens to be ignored, don't forget the trailing space
-unsignificant_tokens = ("Rivière d'","Rivière de",'Rivière ',"Ruisseau d'","Ruisseau de la ","Ruisseau de l'",'Ruisseau de ',"Ruisseau du ",'Ruisseau ','Le ','La ',"L'","Rio del ","Rio ","Fiume ","Torrent d'","Torrent de ","Torrent ","Torrente Valle ","Torrente "," (Ruisseau de)")
+unsignificant_tokens = ("Rivière d'","Rivière de",'Rivière '," (Ruisseau d')","Ruisseau d'","Ruisseau de la ","Ruisseau de l'"," (Ruisseau de)",'Ruisseau de ',"Ruisseau du ",'Ruisseau ','Le ','La ',"L'","Rio del ","Rio ","Fiume ","Torrent d'","Torrent de ","Torrent ","Torrente Valle ","Torrente ")
 
 def clean4fuzzy(i):
     return unicode(remove_tokens(i.encode('utf8'),unsignificant_tokens).lower().strip(),encoding='utf8')
