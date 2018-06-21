@@ -43,6 +43,7 @@ for name,rivers in rivers_grouped.iteritems():
         name_utf8 = name_unicode.encode('utf8')
         print '%d duplicates found for %s, merging...' % (len(rivers),name_utf8)
         new_river = {"duplicates":rivers}
+        #continue
         #~ fields = set([])
         #~ for river in rivers:
             #~ fields.union([field for field in river])

@@ -1,0 +1,19 @@
+[package]
+name = "osmpbfparser2"
+version = "0.1.0"
+authors = ["Frederic Parrel <fredericparrel@gmail.com>"]
+
+[dependencies]
+osmpbfreader="0.12.0"
+bson = "0.10"
+mongodb = "0.3.7"
+serde = "1.0.66"
+serde_derive = "1.0.66"
+
+[[bin]]
+name = "testbulk"
+path = "src/testbulk.rs"
+
+[[bin]]
+name = "osmpbfparser2"
+path = "src/main.rs"
