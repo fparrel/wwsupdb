@@ -1,6 +1,35 @@
 #TODO: several topos, rivers on different pbf files, verifier Nive
 
-EVO:
+EVO new:
+
+Abeau: ajouté osm
+Ance du nord: ?
+Bras de la Plaine: Réunion
+Bès: ?
+Béal de Brioude: ajouté osm
+Dordogne: ?
+Rivière du Mat: Réunion
+Fium Alto:
+Foron de Taninges: ?
+Fraissinet: ajouté osm
+Gardon de St Martin de Lansuscle: ?
+Gave d'Azun: ?
+Grande Blourde: ?
+Hyères: 
+Rivière Langevin: Réunion
+Langougnole: ajouté osm
+Lez (d'Ariège): ?
+Liamone: ?
+Lignon de l'Ardèche: ?
+Lignon du Velay: ?
+Mataroni: Guyanne
+Micaud: vague statique
+Millérines: ajouté osm
+mont giroux (mayenne): ?
+Mouss: mm + ajouté osm
+Nascouil: ajouté osm
+
+EVO old:
 
 Abeau: ajouté osm
 Acheron: Grèce
@@ -132,7 +161,7 @@ Langougnole: ajouté osm
 Larot: ajouté osm
 Lauenenbach: Suisse
 Leguer: mm
-Leizaran: Esoagne
+Leizaran: Espagne
 Leny: Ecosse
 Lesse: Belgique
 Leyre: mm

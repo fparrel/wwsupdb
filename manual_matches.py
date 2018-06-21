@@ -1,11 +1,13 @@
 # -*- coding: utf8 -*-
 
 manual_matches = {'evo':{
+"Agout":"L'Agoût",
 'Aiguette':"L'Ayguette",
 'Alignon (du Haut Tarn)':"L'Alignon",
 "Ebron":"L'Ébron",
 "Alzeau":"La Rougeanne",
 "Ance du Sud":"L'Ance",
+"Ance du nord":"L'Ance",
 "Alpe Basso":"Rio del Basso",
 "Behine":"La Béhine",
 "Besorgues":"La Bésorgues",
@@ -55,6 +57,7 @@ manual_matches = {'evo':{
 "Leguer":"Le Léguer",
 "Leyre":"L'Eyre",
 "Lez (d'Ariège)":"Le Lez",
+"LEZ":"Le Lez", # de montpellier
 "Lignon de l'Ardèche":"Le Lignon",
 "Lignon du Forez":"Le Lignon",
 "Lignon du Velay":"Le Lignon",
@@ -62,5 +65,9 @@ manual_matches = {'evo':{
 "Lot (Haut)":"Le Lot",
 "Malzac":"Ruisseau de Malezac",
 "Mayenne (haute)":"La Mayenne",
+"mont giroux (mayenne)":"La Mayenne",
+"Mosellotte":"La Moselotte",
+"Mouss":"Ruisseau du Mousse",
+"Nive d'Estérençuby":"La Nive",
 },
 'rivermap':{},'ckfiumi':{"Guichard":"Ghicciard"}}

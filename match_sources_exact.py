@@ -20,7 +20,10 @@ def merge(src1,id_src1,src2,id_src2_input):
   for id_src2 in id_src2_input:
     doc2 = db[src2].find_one({"_id":id_src2})
     if doc2==None:
-      print '%s not found'%id_src2.encode('utf8')
+      try:
+        print '%s not found'%id_src2.encode('utf8')
+      except:
+        print '%s not found'%repr(id_src2)
       return
     new_doc = {}
     new_doc.update(doc1)
