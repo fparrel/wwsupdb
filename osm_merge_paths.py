@@ -3,7 +3,7 @@
 import pymongo
 from merge_paths import merge_paths
 
-collection = pymongo.MongoClient().wwsupdb.osm_raw
+collection = pymongo.MongoClient().wwsupdb.osm
 
 for river in collection.find():
     print river['_id'].encode('utf8')

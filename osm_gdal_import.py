@@ -3,6 +3,7 @@
 import gdal, ogr
 import pymongo
 import os
+import sys
 
 collection = pymongo.MongoClient().wwsupdb.osm_raw
 
@@ -43,26 +44,35 @@ def get_rivers(fname):
                         if 'name' in feat.keys():
                             name = feat.GetFieldAsString('name')
                             if len(name)>0:
-                                yield (name,feat.geometry().GetPoints())
+                                yield (name,map(lambda pt:(pt[1],pt[0]),feat.geometry().GetPoints()))
 
                 #The destroy method is necessary for interleaved reading
                 feat.Destroy()
 
                 feat = lyr.GetNextFeature()
 
+def process(fname):
+    bulk = []
+    print fname
+    for name,path in get_rivers(fname):
+        bulk.append(pymongo.UpdateOne({'_id':name},{"$push":{"paths":path}},upsert=True))
+        if len(bulk)>100:
+            try:
+                collection.bulk_write(bulk)
+            except pymongo.errors.BulkWriteError,e:
+                pprint(e.details)
+                raise Exception(e)
+            bulk = []
+    collection.bulk_write(bulk)
 
-collection.drop()
-bulk = []
-for fname in os.listdir('data_osm_pbf') + os.listdir('data_osm_pbf_italy'):
-    if fname.endswith('.osm.pbf'):
-        print fname
-        for name,path in get_rivers('data_osm_pbf/%s'%fname):
-            bulk.append(pymongo.UpdateOne({'_id':name},{"$push":{"paths":path}},upsert=True))
-            if len(bulk)>100:
-                try:
-                    collection.bulk_write(bulk)
-                except pymongo.errors.BulkWriteError,e:
-                    pprint(e.details)
-                    raise Exception(e)
-                bulk = []
-collection.bulk_write(bulk)
+def main():
+    if len(sys.argv)==1:
+        collection.drop()
+        for fname in os.listdir('data_osm_pbf'):
+            if fname.endswith('.osm.pbf'):
+                process('data_osm_pbf/%s' % fname)
+    else:
+        process(sys.argv[1])
+
+if __name__=='__main__':
+    main()

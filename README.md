@@ -13,7 +13,8 @@ White Water Standup Paddling Database. Get data from different sources, tries to
 # Cargo + rust
 curl https://sh.rustup.rs -sSf | sh
 source $HOME/.cargo/env
-#
+# Python flask + flask_babel + gdal + pymongo + scrapy + requests + fuzzywuzzy
+pip install flask flask_babel gdal pymongo scrapy requests fuzzywuzzy
 ```
 ### Use
 ```
@@ -26,11 +27,16 @@ cd wwsupdb
 mkdir data_osm_pbf
 cd data_osm_pbf
 wget http://download.geofabrik.de/europe/france/corse-latest.osm.pbf
-# Build osm data parser
-cd pbfparser
+## Build osm data parser V1
+#cd pbfparser
+#cargo build --release
+## Insert osm data into MongoDB
+#./osm_parse.sh
+# Build osm data parser V2
+cd osmpbfparser2
 cargo build --release
 # Insert osm data into MongoDB
-./osm_parse.sh
+./osmpbfparser2/target/release/osmpbfparser2 data_osm_pbf/*.osm.pbf
 # Scrap eauxvives.org data to a .json file
 ./evo_scrap.sh
 # Import evo data into MongoDB
@@ -46,7 +52,7 @@ cargo build --release
 # Match evo, rivermap and ckfiumi with osm data in MongoDB
 ./match_sources_exact.py
 # Check sources matching
-./check_match_sources.py > sources.html
+./check_match_sources.py
 firefox sources.html &
 # Reorder rivermap routes on MongoDB
 ./rivers_merged_sort.py
@@ -58,3 +64,4 @@ firefox "http://localhost:8080/"
 # Get rivermap.sh public data
 rivermap.ch.sh
 ```
+

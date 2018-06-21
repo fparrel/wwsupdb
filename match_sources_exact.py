@@ -29,7 +29,7 @@ def merge(src1,id_src1,src2,id_src2_input):
     bulk.append(pymongo.UpdateOne({'_id':id_src2},{"$set":new_doc},upsert=True))
     if len(bulk)>100:
       try:
-        result = db['rivers_merged'].bulk_write(bulk)
+        result = db['rivers_merged2'].bulk_write(bulk)
       except pymongo.errors.BulkWriteError,e:
         pprint(e.details)
         raise Exception(e)
@@ -38,12 +38,12 @@ def merge(src1,id_src1,src2,id_src2_input):
 def flush():
   global bulk
   if len(bulk)>0:
-    db['rivers_merged'].bulk_write(bulk)
+    db['rivers_merged2'].bulk_write(bulk)
     bulk = []
 
 src_names = {}
 #allnames = set([])
-for src in ('evo','rivermap','ckfiumi','rivers'):
+for src in ('evo','rivermap','ckfiumi','osm'):
   src_names[src] = map(lambda n:(clean4fuzzy(n['_id']),n['_id']),list(db[src].find({},{"_id":1})))
   src_names[src].sort(key=lambda x:x[0])
   print src,len(src_names[src])
@@ -51,17 +51,18 @@ for src in ('evo','rivermap','ckfiumi','rivers'):
 
 
 i = {'evo':0,'rivermap':0,'ckfiumi':0}#,'osm':0}
-allnames=src_names['rivers']
+allnames=src_names['osm']
 for name,fullname in allnames:
   #print name.encode('utf8')
   for src in ('evo','rivermap','ckfiumi'):
     while i[src]<len(src_names[src]) and name>src_names[src][i[src]][0]:
       i[src] += 1
     if i[src]<len(src_names[src]) and name==src_names[src][i[src]][0]:
-      merge(src,src_names[src][i[src]][1],'rivers',fullname)
+      merge(src,src_names[src][i[src]][1],'osm',fullname)
 
 for src in manual_matches:
   for id1,id2 in manual_matches[src].iteritems():
     #print src,id1,'rivers',id2
-    merge(src,id1,'rivers',id2)
+    merge(src,id1,'osm',id2)
 flush()
+

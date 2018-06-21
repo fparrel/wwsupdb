@@ -17,7 +17,7 @@ def main():
     cptrs = {'osm':0,'evo':0,'rivermap':0,'ckfiumi':0,'merged':0}
     not_merged = {'evo':[],'rivermap':[],'ckfiumi':[]}
     # get merged rivers
-    for river in db.rivers_merged.find({},{"_id":1,"name_evo":1,"name_rivermap":1}):
+    for river in db.rivers_merged2.find({},{"_id":1,"name_evo":1,"name_rivermap":1}):
         cptrs['merged']+=1
         river["name_osm"]=river["_id"]
         names_osm.append(river["_id"])
@@ -27,15 +27,16 @@ def main():
             names_rivermap.append(river["name_rivermap"])
         rivers[clean4fuzzy(river["_id"])] = river
     # get remaining evo rivers
-    for river in db.evo.find({},{"_id":1,"situation.0":"country"}):
+    for river in db.evo.find({},{"_id":1,"situation":1}):
         cptrs['evo']+=1
         if river["_id"] not in names_evo:
             if river["_id"] not in rivers:
                 rivers[clean4fuzzy(river["_id"])] = {"name_evo":river["_id"]}
-                if river['country'] in ('France','Italie'):
+                situation = river.get("situation")
+                if situation==None or len(situation)==0 or situation[0] in ('France','Italie'):
                     not_merged['evo'].append((clean4fuzzy(river["_id"]),river["_id"]))
                 else:
-                    print 'Ignoring %s in %s' % (river["_id"].encode('utf8'), country.encode('utf8'))
+                    print 'Ignoring %s in %s' % (river["_id"].encode('utf8'), repr(situation))
             else:
                 rivers[clean4fuzzy(river["_id"])]["name_evo"]=river["_id"]
     # get remaining rivermap rivers
@@ -57,7 +58,7 @@ def main():
             else:
                 rivers[clean4fuzzy(river["_id"])]["name_ckfiumi"]=river["_id"]
     # get remaining osm rivers
-    for river in db.rivers.find({},{"_id":1}):
+    for river in db.osm.find({},{"_id":1}):
         cptrs['osm']+=1
         if river["_id"] not in names_osm:
             if river["_id"] not in rivers:
