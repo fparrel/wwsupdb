@@ -15,3 +15,6 @@ def remove_tokens(s,tokens):
             if i>-1:
                 s=s[:i]+s[i+len(token):]
     return s
+
+if __name__=='__main__':
+    print clean4fuzzy("Ourtrigous (Ruisseau d')")
