@@ -26,7 +26,14 @@ cd wwsupdb
 # Get osm data
 mkdir data_osm_pbf
 cd data_osm_pbf
-wget http://download.geofabrik.de/europe/france/corse-latest.osm.pbf
+#wget http://download.geofabrik.de/europe/france/corse-latest.osm.pbf
+wget http://download.geofabrik.de/europe/france-latest.osm.pbf
+wget http://download.geofabrik.de/europe/italy-latest.osm.pbf
+wget http://download.geofabrik.de/europe/spain-latest.osm.pbf
+cd ..
+wget http://download.geofabrik.de/europe/france.kml
+wget http://download.geofabrik.de/europe/italy.kml
+wget http://download.geofabrik.de/europe/spain.kml
 ## Build osm data parser V1
 #cd pbfparser
 #cargo build --release

@@ -3,7 +3,10 @@
 {% block urlext %}prepare{% endblock %}
 {% block headext %}<link type="text/css" rel="StyleSheet" href="/static/styles/map.css" />{% endblock %}
 {% block body %}
-            <div>Load river: <input type="text" onkeydown="search_river(event,this.value);"/> EVO name: <span id="river_name"/>
+            <div>Load river: <input type="text" onkeydown="search_river(event,this.value);"/>
+            EVO name: <span id="river_name_evo">.</span>
+            RIM name: <span id="river_name_rivermap">.</span>
+            CKF name: <span id="river_name_ckfiumi">.</span>
             </div>
             <div id="mapnwpts" style="float:left; margin:10px 0px;">
                 <div id="maptotal" style="float: left;">

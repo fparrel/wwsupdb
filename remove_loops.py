@@ -8,15 +8,7 @@
 # ----+         \--+--------    => ----+            +--------
 #     \------------/                   \------------/
 
-input_filename = 'rivers-merged.json'
-output_filename = 'rivers-merged-cleaned.json'
-
-import json
-
-with open(input_filename,'r') as f:
-    rivers = json.load(f)
-
-for river in rivers:
+def remove_loops(river):
     loops = []
     for i in range(0,len(river['paths'])):
         for j in range(0,len(river['paths'])):
@@ -35,8 +27,23 @@ for river in rivers:
     for i in range(0,len(river['paths'])):
         if i not in loops:
             newpaths.append(river['paths'][i])
-    print '%s: path: %d->%d points: %d->%d' % (river['name'].encode('latin1'),len(river['paths']),len(newpaths),sum(map(len,river['paths'])),sum(map(len,newpaths)))
+    #print '%s: path: %d->%d points: %d->%d' % (river['name'].encode('latin1'),len(river['paths']),len(newpaths),sum(map(len,river['paths'])),sum(map(len,newpaths)))
     river['paths'] = newpaths
 
-with open(output_filename,'w') as f:
-    json.dump(rivers,f)
+def main():
+    input_filename = 'rivers-merged.json'
+    output_filename = 'rivers-merged-cleaned.json'
+
+    import json
+
+    with open(input_filename,'r') as f:
+        rivers = json.load(f)
+
+    for river in rivers:
+        remove_loops(river)
+
+    with open(output_filename,'w') as f:
+        json.dump(rivers,f)
+
+if __name__=='__main__':
+    main()

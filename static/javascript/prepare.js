@@ -384,40 +384,56 @@ function search_river(evt,river_name) {
 var current_river;
 
 function addRiverToMap(river_obj) {
-    $("#river_name").html(river_obj['name']);
+    console.log(river_obj);
+
+    // Names
+    $("#river_name_evo").html('name_evo' in river_obj?(river_obj['name_evo']+' ('+river_obj.evo.length+')'):'/');
+    $("#river_name_rivermap").html('name_rivermap' in river_obj?(river_obj['name_rivermap']+' ('+river_obj.rivermap.length+')'):'/');
+    $("#river_name_ckfiumi").html('name_ckfiumi' in river_obj?(river_obj['name_ckfiumi']+' ('+river_obj.ckfiumi.length+')'):'/');
+
+    // OSM
     river_points = [];
     var i;
     var j;
     //var k = 0;
     var pts=[];
-    for(i=0;i<river_obj.paths.length;i++) {
+    for(i=0;i<river_obj.osm.paths.length;i++) {
         pts[i]=[];
-        for(j=0;j<river_obj.paths[i].length;j++) {
-            pts[i][j] = {"lat": river_obj.paths[i][j][0], "lon": river_obj.paths[i][j][1],"name":" "+i+" "+j};
+        for(j=0;j<river_obj.osm.paths[i].length;j++) {
+            pts[i][j] = {"lat": river_obj.osm.paths[i][j][0], "lon": river_obj.osm.paths[i][j][1],"name":" "+i+" "+j};
             //k++;
         }
     }
     addRiverPoints(pts);
+    $("#nb_paths").html(river_obj.osm.paths.length);
+
+    // ??
     current_river = river_obj['name'];
-    //console.log(river_obj);
-    var i=-1;
-    $("#nb_paths").html(river_obj.paths.length);
-    if ("presentation" in river_obj) {
-      $("#presentation").html(river_obj.presentation);
+
+    // Evo
+    if ("evo" in river_obj) {
+        if ("presentation" in river_obj.evo[0]) {
+          $("#presentation").html(river_obj.evo[0].presentation);
+        }
+        if ("parcours" in river_obj.evo[0]) {
+          var i=-1;
+          $("#parcours").html('<ul><li>'+river_obj.evo[0].parcours.map(function(p) { i++; return p.name + ' (' + p.cotation + ',' + p.duree + ')' + '<ul><li onClick="setEmb(this,\''+current_river+'\','+i+');" class="emb_deb">Emb:'+p.embarquement+'</li><li onClick="setDeb(this,\''+current_river+'\','+i+');" class="emb_deb">Deb:'+p.debarquement+'</li></ul>'; }).join('</li><li>')+'</li></ul>');
+        } else {
+          $("#parcours").html('<b>No parcours in db</b>');
+        }
     }
-    if ("parcours" in river_obj) {
-      $("#parcours").html('<ul><li>'+river_obj.parcours.map(function(p) { i++; return p.name + '<ul><li onClick="setEmb(this,\''+current_river+'\','+i+');" class="emb_deb">Emb:'+p.embarquement+'</li><li onClick="setDeb(this,\''+current_river+'\','+i+');" class="emb_deb">Deb:'+p.debarquement+'</li></ul>'; }).join('</li><li>')+'</li></ul>');
-    } else {
-      $("#parcours").html('<b>No parcours in db</b>');
-    }
-    var i=-1;
-    if ("routes_rivermap" in river_obj) {
-      $("#rivermap").html('<ul><li>'+river_obj.routes_rivermap.map(function(p) { i++; return ''+i+': ' +p.name + ': ' + p.length + ' km '+p.ww_class }).join('</li><li>')+'</li></ul>');
-      for(i=0;i<river_obj.routes_rivermap.length;i++) {
-          addPointRivermap(river_obj.routes_rivermap[i].start,'S'+i);
-          addPointRivermap(river_obj.routes_rivermap[i].end,'E'+i);
-      }
-    } else {
-      $("#rivermap").html('<b>No routes in db</b>');
+
+    // RiverMap
+    if ("rivermap" in river_obj) {
+        if ("routes_rivermap" in river_obj.rivermap[0]) {
+          var i=-1;
+          $("#rivermap").html('<ul><li>'+river_obj.rivermap[0].routes_rivermap.map(function(p) { i++; return ''+i+': ' +p.name + ': ' + p.length + ' km '+p.ww_class }).join('</li><li>')+'</li></ul>');
+          for(i=0;i<river_obj.rivermap[0].routes_rivermap.length;i++) {
+              addPointRivermap(river_obj.rivermap[0].routes_rivermap[i].start,'S'+i);
+              addPointRivermap(river_obj.rivermap[0].routes_rivermap[i].end,'E'+i);
+          }
+        } else {
+          $("#rivermap").html('<b>No routes in db</b>');
+        }
     }
 }

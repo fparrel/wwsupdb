@@ -29,7 +29,7 @@ elif config["data_source"]=="mongo":
     client = pymongo.MongoClient()
 
     def rivers(name):
-        river = client.wwsupdb.rivers_merged.find_one({"_id":name})
+        river = client.wwsupdb.rivers_merged2.find_one({"_id":name})
         if river==None:
             river = client.wwsupdb.rivers.find_one({"_id":name})
         return river
