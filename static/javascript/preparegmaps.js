@@ -1,40 +1,78 @@
 
-/* redraw track polyline from contents of river_points */
-function redrawRiverLine() {
-  var pathi;
-  if (typeof line != "undefined") {
-      var i;
-      for(i=0;i<line.length;i++)
-        line[i].setMap(null);
-  } else {
-    line = [];
-  }
-  for(pathi=0;pathi<river_points.length;pathi++) {
-    if(noline)return;
-    line[pathi] = new google.maps.Polyline(
-        {
-            path: river_points[pathi],
-            geodesic: true,
-            strokeColor: "#bb8000",
-            strokeOpacity: 1.0,
-            strokeWeight: 4
-        });
-    line[pathi].setMap(map);
-  }
-}
+var river_paths = [];
 
-/* remove all markers */
-function removeMarkers() {
+function clearRiverPaths() {
     var i;
-    for(i=0;i<markers.length;i++) {
-        markers[i].setMap(null);
+    for(i=0;i<river_paths.length;i++) {
+        river_paths[i].setMap(null);
     }
-    markers = [];
 }
 
-function removeMarker(index) {
-    markers[index].setMap(null);
+function addRiverPaths(river_points) {
+    var i;
+    var j;
+    var bounds = new google.maps.LatLngBounds();
+    for (i=0;i<river_points.length;i++) {
+        river_paths[i] = new google.maps.Polyline(
+            {
+                path: river_points[i],
+                geodesic: true,
+                strokeColor: "#bb8000",
+                strokeOpacity: 1.0,
+                strokeWeight: 4
+            });
+        river_paths[i].setMap(map);
+        for(j=0;j<river_points[i].length;j++) {
+            bounds.extend(river_points[i][j]);
+        }
+    }
+    map.fitBounds(bounds);
 }
+
+function toogleRiverPath(i,checked) {
+    if (checked) {
+        river_paths[i].setMap(map);
+    } else {
+        river_paths[i].setMap(null);
+    }
+}
+
+/*
+// redraw track polyline from contents of river_points
+function redrawRiverPaths() {
+    var i;
+    for(i=0;i<river_paths.length;i++) {
+        river_paths[i].setMap(null);
+    }
+    for (i=0;i<river_points.length;i++) {
+        river_paths[i] = new google.maps.Polyline(
+            {
+                path: river_points[i],
+                geodesic: true,
+                strokeColor: "#bb8000",
+                strokeOpacity: 1.0,
+                strokeWeight: 4
+            });
+        river_paths[i].setMap(map);
+    }
+}
+
+function addRiverPoints(path_list) {
+  var pathi;
+  for(pathi=0;pathi<path_list.length;pathi++) {
+    var pts = path_list[pathi];
+    if (pts.length>0) {
+        var i;
+        var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(pts[0].lat,pts[0].lon),new google.maps.LatLng(pts[0].lat,pts[0].lon));
+        for(i=0;i<pts.length;i++) {
+            addRiverPoint(pts[i],pathi,i);
+            bounds.extend(new google.maps.LatLng(pts[i].lat,pts[i].lon));
+        }
+        map.fitBounds(bounds);
+        redrawRiverPaths();
+    }
+  }
+}*/
 
 function addPoint(newpt) {
     //current_parcours_id
@@ -45,7 +83,6 @@ function addPoint(newpt) {
     $.get(url, function() { console.log('done'); } ).fail(function(err){$("#svrresponse").html(err.responseText);});
 }
 
-var rivermap_markers=[];
 function addPointRivermap(newpt,title) {
     if (!((newpt.lat, newpt.lon) in rivermap_markers)) {
       rivermap_markers[(newpt.lat, newpt.lon)] = new google.maps.Marker({position: new google.maps.LatLng(newpt.lat, newpt.lon), map: map, draggable: true,label:title});
@@ -54,7 +91,8 @@ function addPointRivermap(newpt,title) {
     }
 }
 
-/* Add a given point object to the map */
+/*
+// Add a given point object to the map
 function addRiverPoint(newpt,pathi,index) {
     if(index==0) {
       river_points[pathi]=[];
@@ -62,11 +100,14 @@ function addRiverPoint(newpt,pathi,index) {
     river_points[pathi][index] = new google.maps.LatLng(newpt.lat,newpt.lon);
     river_points[pathi][index].pt = newpt;
 }
+*/
 
 /* Click on map event */
 function onMapClick(lat,lon) {
     addPoint(new Point(lat,lon));
 }
+
+var rivermap_markers=[];
 
 // Create icons
 var sel_icon = "/static/images/MarkerStart.png";
@@ -86,24 +127,4 @@ google.maps.event.addListener(map,"click",function(evt) {
     onMapClick(evt.latLng.lat(),evt.latLng.lng());
 });
 
-function addRiverPoints(path_list) {
-  var pathi;
-  for(pathi=0;pathi<path_list.length;pathi++) {
-    //console.log("path#"+pathi);
-    var pts = path_list[pathi];
-    //console.log("pts="+pts);
-    if (pts.length>0) {
-        var i;
-        var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(pts[0].lat,pts[0].lon),new google.maps.LatLng(pts[0].lat,pts[0].lon));
-        for(i=0;i<pts.length;i++) {
-            addRiverPoint(pts[i],pathi,i);
-            bounds.extend(new google.maps.LatLng(pts[i].lat,pts[i].lon));
-        }
-        map.fitBounds(bounds);
-        redrawRiverLine();
-        refreshRiverLength();
-    }
-  }
-}
-
-getRiver("Var");
+//getRiver("Var");
