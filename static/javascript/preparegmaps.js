@@ -1,11 +1,25 @@
 
 var river_paths = [];
 
-function clearRiverPaths() {
+function clearMapObjects() {
     var i;
     for(i=0;i<river_paths.length;i++) {
         river_paths[i].setMap(null);
+        river_paths = [];
     }
+    for(i=0;i<rivermap_markers.length;i++) {
+        rivermap_markers[i].setMap(null);
+        rivermap_markers = [];
+    }
+}
+
+function zoomToPath(i) {
+    var bounds = new google.maps.LatLngBounds();
+    var j;
+    for(j=0;j<river_paths[i].getPath().length;j++) {
+        bounds.extend(river_paths[i].getPath().getAt(j));
+    }
+    map.fitBounds(bounds);
 }
 
 function addRiverPaths(river_points) {

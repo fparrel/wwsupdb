@@ -25,17 +25,10 @@
                         <b>Paths:</b> <span id="paths"></span>
                     </div>
                     <div id="evo">
-                        <h2>EVO Description</h2>
-                        <div id="presentation"></div>
-                        <h2>Parcours</h2>
-                        <div id="parcours"></div>
                     </div>
                     <div id="rivermap">
-                        <h2>RiverMap</h2>
-                        <div id="routes_rivermap"></div>
                     </div>
                     <div id="ckfiumi">
-                        <h2>CkFiumi</h2>
                     </div>
                 </div>
             </div>
@@ -46,12 +39,6 @@
 {% endblock %}
 {% block jsext %}
 <script type="text/javascript" src="/static/javascript/jquery.js"></script>
-<!--<script type="text/javascript" src="/static/javascript/jquery.flot.js"></script>
-<script type="text/javascript" src='/static/javascript/raphael-min.js'></script>
-<script type="text/javascript" src='/static/javascript/g.raphael-min.js'></script>
-<script type="text/javascript" src='/static/javascript/g.line-min.js'></script>
-<script type="text/javascript" src="/static/javascript/jquery.flot.selection.js"></script>
-<script type="text/javascript" src="/static/javascript/jquery.flot.time.js"></script>-->
 {% if map_type=="GMaps" %}
 <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key={{ GMapsApiKey }}"></script>
 {% elif map_type=="GeoPortal" %}

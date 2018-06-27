@@ -68,12 +68,13 @@ def index(map_type):
 def river(name):
     river = rivers(name)
     if river==None:
-        abort(404)
+        abort(404,"River %s not found"%repr(name))
     else:
         return Response(json.dumps(river), mimetype='application/json')
 
 @application.route('/remove_paths/<river_id>/<pathidlist>')
 def remove_paths(river_id,pathidlist):
+    # Get data and check inputs
     try:
         pathids = map(int,pathidlist.split(','))
     except:
@@ -81,29 +82,41 @@ def remove_paths(river_id,pathidlist):
     river = rivers(river_id)
     if river==None:
         abort(404,'Cannot find river')
+    # Save transform: first and last points of paths to remove
+    t = {'op':'remove_paths','river_id':river_id,'paths':map(lambda pathid:{'firstpt':river['osm']['paths'][pathid][0],'lastpt':river['osm']['paths'][pathid][-1]},pathids)}
     # Path ids have to be sorted from greater to lower in order to not shift indexes
     pathids.sort(reverse=True)
+    # Perform transform
     for pathid in pathids:
         del river['osm']['paths'][pathid]
+    # Save
     save_river(river)
-    save_transform(['remove_paths',river_id,pathids])
+    save_transform(t)
+    # Returns transformed data
     return Response(json.dumps(river), mimetype='application/json')
 
 @application.route('/merge_paths_a_after_b/<river_id>/<int:path_id_a>/<int:path_id_b>')
 def merge_paths_a_after_b(river_id,path_id_a,path_id_b):
+    # Get data and check inputs
     river = rivers(river_id)
     if river==None:
         abort(404,'Cannot find river')
     if path_id_a<0 or path_id_a>=len(river['osm']['paths']) or path_id_b<0 or path_id_b>=len(river['osm']['paths']):
         abort(400,'Invalid path ids given')
+    # Save transform: first and last points of paths to merge
+    t = {'op':'merge_paths_a_after_b','river_id':river_id,'a':{'firstpt':river['osm']['paths'][path_id_a][0],'lastpt':river['osm']['paths'][path_id_a][-1]},'b':{'firstpt':river['osm']['paths'][path_id_b][0],'lastpt':river['osm']['paths'][path_id_b][-1]}}
+    # Perfom transform
     river['osm']['paths'][path_id_b].extend(river['osm']['paths'][path_id_a])
     del river['osm']['paths'][path_id_a]
+    # Save
     save_river(river)
-    save_transform(['merge_paths_a_after_b',river_id,path_id_a,path_id_b])
+    save_transform(t)
+    # Returns transformed data
     return Response(json.dumps(river), mimetype='application/json')
 
 @application.route('/split_paths/<river_id>/<pathnameslist>')
 def split_paths(river_id,pathnameslist):
+    # Get data and parse inputs
     try:
         pathnames = pathnameslist.split('^')
     except:
@@ -113,14 +126,18 @@ def split_paths(river_id,pathnameslist):
         abort(404,'Cannot find river')
     if len(pathnames)!=len(river['osm']['paths']):
         abort(400,"Number of names does't match number of paths")
+    splits = []
+    # Perform split
     i = 0
     for pathname in pathnames:
         print pathnames,pathname,i
+        splits.append({'name':pathname,'firstpt':river['osm']['paths'][i][0],'lastpt':river['osm']['paths'][i][-1]})
         new_river = copy.deepcopy(river)
         new_river['osm']['paths'] = [river['osm']['paths'][i]]
         new_river['_id'] = pathname
         save_river(new_river)
         i += 1
+    save_transform({'op':'split_paths','splits':splits})
     return Response('OK')
 
 @application.route('/river/<river_name>/parcours/<int:parcours_id>/<element>/point/<float:lat>/<float:lon>')
@@ -134,6 +151,15 @@ def get_river_element_point(river_name,parcours_id,element):
         return rivers(river_name)['parcours'][parcours_id][element+'_point']
     else:
         abort(404)
+
+@application.route('/boxsearch/<float:minlat>,<float:maxlat>,<float:minlon>,<float:maxlon>')
+def box_search(minlat,maxlat,minlon,maxlon):
+    out = []
+    qry = {"osm.bounds.0":{"$lte":maxlat},"osm.bounds.1":{"$gte":minlat},"osm.bounds.2":{"$lte":maxlon},"osm.bounds.3":{"$gte":minlon}}
+    print qry
+    for river in client.wwsupdb.rivers_merged2.find(qry):
+        out.append(river['_id'])
+    return Response(json.dumps(out), mimetype='application/json')
 
 @application.route('/flush')
 def flush():
