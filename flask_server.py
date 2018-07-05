@@ -6,11 +6,7 @@
 #
 
 
-try:
-    from config import keysnpwds,config
-except:
-    print 'You must define keysnpwds in config.py'
-    exit()
+from config import keysnpwds,config
 import sys
 import json
 import datetime

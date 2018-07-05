@@ -17,3 +17,4 @@ keysnpwds=readKeysAndPasswords('config/keysnpwds.json')
 config=readConfig()
 
 domain = config['domain']
+

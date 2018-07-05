@@ -2,8 +2,21 @@
 # -*- coding: utf8 -*-
 
 import pymongo
-from match_sources import clean4fuzzy
+from text_utils import clean4fuzzy
 from polygons import is_in_country
+
+import errno
+import os
+
+
+def mkdir_p(path):
+    try:
+        os.makedirs(path)
+    except OSError as exc:  # Python >2.5
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else:
+            raise
 
 def none_or_encode(s):
     if s==None:
@@ -74,7 +87,9 @@ def main():
     # Display rivers by alphabetical order
     names_all = rivers.keys()
     names_all.sort()
-    f = open('sources.html','w')
+    outputdir = 'check_matches'
+    mkdir_p(outputdir)
+    f = open('%s/sources.html'%outputdir,'w')
     f.write('<!DOCTYPE html>\n')
     f.write('<html><head><style>table, th, td {border: 1px solid black;}</style><meta http-equiv="Content-Type" content="text/html; charset=utf8" /></head><body>')
     f.write('<b>Merged: %s</b><table><tr><th>cleaned name %s</th>'%(cptrs[merged],len(names_all)))
@@ -90,7 +105,7 @@ def main():
     f.write('</table></body></html>')
     f.close()
     for src in not_merged:
-        f = open('notmerged_%s.html'%src,'w')
+        f = open('%s/notmerged_%s.html'%(outputdir,src),'w')
         f.write('<!DOCTYPE html>\n')
         f.write('<html><head><style>table, th, td {border: 1px solid black;}</style><meta http-equiv="Content-Type" content="text/html; charset=utf8" /></head><body><b>Count: %s / %s</b><table><tr><th>cleaned name</th><th>name</th></tr>' % (len(not_merged[src]),cptrs[src]))
         not_merged[src].sort()
@@ -98,7 +113,7 @@ def main():
             f.write('<tr><td>%s</td><td>%s</td></tr>'%(cleaned_name.encode('utf8'),name.encode('utf8')))
         f.write('</table></body></html>')
         f.close()
-    f = open('merged.html','w')
+    f = open('%s/merged.html'%outputdir,'w')
     f.write('<!DOCTYPE html>\n')
     f.write('<html><head><style>table, th, td {border: 1px solid black;}</style><meta http-equiv="Content-Type" content="text/html; charset=utf8" /></head><body><b>Count: %s / %s</b><table><tr><th>cleaned name</th><th>name</th></tr>' % (cptrs[merged],len(names_all)))
     for river in db[merged].find({},{"_id":1}):
@@ -110,3 +125,4 @@ def main():
 
 if __name__=='__main__':
     main()
+

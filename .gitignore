@@ -100,8 +100,21 @@ ENV/
 # mypy
 .mypy_cache/
 
-# data and config files
+# Project specific files:
+# osm data
 *.osm.pbf
+# rounding polygons
+*.kml
+# mongodb's data
 mongo_data/
+# config files
 config/
+# Scraps
+ckfiumi.json
+dc.json
+evo.json
+rivermap.json
+rivermap_ch_scrap.xml
+# output files
+check_matches/
 
