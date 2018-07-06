@@ -163,4 +163,13 @@ manual_matches = {'evo':{
 "Vézère de Pérols":"La Petite Vézère",
 "Vézère de Saint-Merd":"La Vézère",
 "Ruisseau d'Égletons":"Le Deiro",
-},'ckfiumi':{"Guichard":"Ghicciard"}}
+},
+'ckfiumi':{
+"Aurino (ahr)":"Ahr - Aurino",
+#"Barberino di Mugello":lake
+"Bormida di Pallare":"Bormida di Pallare", # paths not named, only relation have a name
+"Bormida di Màllare (torrente)":"Bormida",
+"But":"Torrente Bût",
+"Guichard":"Ghicciard",
+}}
+
