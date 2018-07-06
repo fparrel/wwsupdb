@@ -24,7 +24,7 @@ fn process_file(filename : &String, rivers_coll : &mongodb::coll::Collection) {
     println!("Parsing {:?}...",filename);
     let mut pbf = osmpbfreader::OsmPbfReader::new(r);
     let objs = pbf.get_objs_and_deps(|obj| {
-        obj.is_way() && obj.tags().contains_key("waterway") && ( obj.tags().get("waterway").unwrap()=="river" || obj.tags().get("waterway").unwrap()=="stream" ) && obj.tags().contains_key("name") && obj.tags().get("name").unwrap().len()>0
+        obj.is_way() && obj.tags().contains_key("waterway") && ( obj.tags().get("waterway").unwrap()=="river" || obj.tags().get("waterway").unwrap()=="stream" || obj.tags().get("waterway").unwrap()=="canal" ) && obj.tags().contains_key("name") && obj.tags().get("name").unwrap().len()>0
     }).unwrap();
     println!("Objs got");
     let mut nodes = HashMap::new();
@@ -84,10 +84,9 @@ fn process_file(filename : &String, rivers_coll : &mongodb::coll::Collection) {
         }
     }
     if bulk.len()>0 {
-        println!("Insert into db... {}",bulk.len());
+        println!("Insert into db... {} river(s)",bulk.len());
         let result = rivers_coll.bulk_write(bulk, true); // send remaining bulk
-
-        println!("Number of rivers inserted: ins:{} match:{} modif:{} del:{} upset:{}",result.inserted_count,result.matched_count,result.modified_count,result.deleted_count,result.upserted_count);
+        println!("Number of rivers inserted: match:{} ins:{} modif:{} del:{} upsert:{}",result.matched_count,result.inserted_count,result.modified_count,result.deleted_count,result.upserted_count);
         match result.bulk_write_exception {
             Some(exception) => {
                 if exception.message.len()>0 {
