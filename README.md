@@ -48,7 +48,7 @@ cd osmpbfparser2
 cargo build --release # more than 3 min on a core i7
 cd ..
 # Insert osm data into MongoDB
-./osmpbfparser2/target/release/osmpbfparser2 data_osm_pbf/*.osm.pbf
+./osmpbfparser2/target/release/osmpbfparser2 data_osm_pbf/*.osm.pbf # around 30secs/Gb
 # Scrap eauxvives.org data to a .json file
 ./evo_scrap.sh # 2 or 3min
 # Import evo data into MongoDB
@@ -62,9 +62,9 @@ cd ..
 # Import ckfiumi data into MongoDB
 ./ckfiumi_import.py # quick
 # Match evo, rivermap and ckfiumi with osm data in MongoDB
-./match_sources_exact.py
+./match_sources_exact.py # 10 seconds
 # Check sources matching
-./check_match_sources.py
+./check_match_sources.py # 10 seconds
 firefox check_matches/sources.html &
 # Reorder rivermap routes on MongoDB
 ./rivers_merged_sort.py

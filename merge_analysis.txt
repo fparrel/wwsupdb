@@ -2,29 +2,16 @@
 
 EVO new:
 
-Abeau: ajouté osm
-Béal de Brioude: ajouté osm
-Dordogne: ?
-Rivière du Mat: Réunion
-Fium Alto:
-Foron de Taninges: ?
-Fraissinet: ajouté osm
-Gardon de St Martin de Lansuscle: ?
-Gave d'Azun: ?
-Grande Blourde: ?
-Hyères: 
+Bras de la Plaine: Réunion
 Rivière Langevin: Réunion
-Langougnole: ajouté osm
-Lez (d'Ariège): ?
-Liamone: ?
-Lignon de l'Ardèche: ?
-Lignon du Velay: ?
 Mataroni: Guyanne
 Micaud: vague statique
-Millérines: ajouté osm
-mont giroux (mayenne): ?
-Mouss: mm + ajouté osm
-Nascouil: ajouté osm
+Oyapock (Saut Maripa): Guyanne
+oyapoque: Guyanne
+Riviere St Etienne: Réunion
+Rivière des Marsouins: Réunion
+Rivière des roches: Réunion
+Voidomatis: Grèce
 
 EVO old:
 
