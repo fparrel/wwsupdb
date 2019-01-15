@@ -11,3 +11,4 @@ for river in collection.find():
     merge_paths(river['paths'])
     remove_loops(river)
     collection.update({"_id":river["_id"]},{"$set":river})
+

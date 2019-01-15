@@ -64,8 +64,8 @@ instance/
 # Sphinx documentation
 docs/_build/
 
-# PyBuilder
-target/
+# Rust binaries
+*/target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -117,4 +117,10 @@ rivermap.json
 rivermap_ch_scrap.xml
 # output files
 check_matches/
+
+# output of rivermap2gpx
+rivermap*.gpx
+
+# output of extractwwdata
+extractwwdata/*.geojson
 
