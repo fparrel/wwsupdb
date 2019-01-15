@@ -1,0 +1,9 @@
+[package]
+name = "extractwwdata"
+version = "0.1.0"
+authors = ["Frederic PARREL <fredericparrel@gmail.com>"]
+
+[dependencies]
+osmpbfreader="0.12.0"
+rand="0.3"
+
