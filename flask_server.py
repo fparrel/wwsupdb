@@ -31,8 +31,9 @@ elif config["data_source"]=="mongo":
             river = client.wwsupdb.rivers_merged2.find_one({"_id":name})
         except pymongo.errors.ServerSelectionTimeoutError:
             abort(504,"MongoDB server not responding")
-        #if river==None:
-        #    river = client.wwsupdb.rivers.find_one({"_id":name})
+        if river==None:
+            river_osm = client.wwsupdb.osm.find_one({"_id":name})
+            river = {"osm":river_osm}
         return river
 
     def save_river(river):
