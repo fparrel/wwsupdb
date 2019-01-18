@@ -1,0 +1,155 @@
+Text got from this url: http://chebro.es/contenido.visualizar.do?idContenido=52931
+*Las coordenadas UTM están referidas al huso 30 datum ETRS89
+Nº TRAMO RÍO UTM X* UTM Y* OBSERVACIONES TÉRMINO MUNICIPAL
+1 Tramo 1: Esca ESCA 663278 4725754 Puente de Salvatierra de Escá Salvatierra de Escá
+2 Tramo 1: Esca ESCA 662976 4722548 Puente de Sigüés Sigüés
+3 Tramo 1: Esca ESCA 662738 4721646 Puente en la carretera A-137 desde Sigüés a Salvatierra de Escá Sigüés
+4 Tramo 1: Esca ESCA 661421 4719773 Puente en la N-240 junto a estación de servicios Venta Carrica Sigüés
+5 Tramo 2: Aragón ARAGON 702659 4741108 Sobre puente Candanchú Aisa
+6 Tramo 2: Aragón ARAGON 703732 4738848 Presa aguas arriba confluencia río Aragón-Canal Roya Canfranc
+7 Tramo 2: Aragón ARAGON 703917 4738747 Confluencia del río Aragón- Canal Roya Canfranc
+8 Tramo 2: Aragón ARAGON 703587 4736801 Puente de Canfranc-Estación Canfranc
+9 Tramo 2: Aragón ARAGON 702650 4732658 Puente de los Peregrinos- localidad de Canfranc Canfranc
+10 Tramo 2: Aragón ARAGON 702035 4728215 Puente de Villanúa Villanúa
+11 Tramo 2: Aragón ARAGON 701166 4722303 Puente de Castiello de Jaca Castiello de Jaca
+12 Tramo 2: Aragón ARAGON 700718 4716884 Puente Nuevo de Jaca (carretera A-2605) Jaca
+13 Tramo 2: Aragón ARAGON 692304 4714536 Puente de Ascara Jaca
+14 Tramo 2: Aragón ARAGON 681778 4713815 Puente de Puente la Reina de Jaca Puente la Reina de Jaca
+15 Tramo 2: Aragón ARAGON 673686 4717637 Puente en la carretera HU-V-5821 desde Berdún a Martes Berdún
+16 Tramo 2: Aragón ARAGON 664130 4719396 Puente en la A-1601 aguas abajo de la cola de Yesa (cerca de la N-240) Artieda
+17 Tramo 2: Aragón IZAS 704364 4737668 Presa en el Barranco de Izas Canfranc
+18 Tramo 2: Aragón CANAL ROYA 706473 4741143 Confluencia con el barranco de Mala Cara Canfranc
+19 Tramo 2: Aragón CANAL ROYA 704182 4739063 Área recreativa junto al azud de Canal Roya Canfranc
+20 Tramo 2: Aragón ESTARRÚN 696978 4733922 Puente peatonal Aisa
+21 Tramo 2: Aragón ESTARRÚN 696348 4732213 Puente en la pista Palangosas Aisa
+22 Tramo 2: Aragón ESTARRÚN 694889 4728899 Puente de la carretera Aisa (A-2605) Aisa
+23 Tramo 2: Aragón SUBORDAN 693117 4745209 Pasarela de los Chitanos Ansó/Fago
+24 Tramo 2: Aragón SUBORDAN 690410 4746740 Puente de la Fitas Comunero de Ansó y Hecho
+25 Tramo 2: Aragón SUBORDAN 687741 4746908 Puente Guarrinza Valle de Hecho
+26 Tramo 2: Aragón SUBORDAN 687054 4744671 Puente Selva Oza Valle de Hecho
+27 Tramo 2: Aragón SUBORDAN 687074 4742318 Sobre infranqueables (aguas abajo del Puente de Sil) Valle de Hecho
+28 Tramo 2: Aragón SUBORDAN 686965 4742000 Barranco Boca del lnfierno Valle de Hecho
+29 Tramo 2: Aragón SUBORDAN 686254 4741128 Centro lnterpretación del Megalitismo Pirenaico Valle de Hecho
+30 Tramo 2: Aragón SUBORDAN 685299 4740333 Bajo paso Gabardito ( Barranco de Lenito) Valle de Hecho
+31 Tramo 2: Aragón SUBORDAN 684531 4734571 Puente entrada Hecho Hecho
+32 Tramo 2: Aragón SUBORDAN 684279 4734237 Puente salida Hecho Hecho
+33 Tramo 2: Aragón SUBORDAN 684000 4732906 Puente de la Torre - Carretera A-176 Hecho Hecho
+34 Tramo 2: Aragón SUBORDAN 685806 4727127 Merendero en la conjunción Río Subordán-Río Osia Valle de Hecho
+35 Tramo 2: Aragón SUBORDAN 686915 4721945 Puente de Embún Valle de Hecho
+36 Tramo 2: Aragón SUBORDAN 684221 4716210 Puente de los Trancos/Aforo Javierregay Puente la Reina de Jaca
+37 Tramo 2: Aragón BARRANCO HOSPITAL 682778 4737117 Acceso al Barranco del Hospital Valle de Hecho
+38 Tramo 2: Aragón BARRANCO HOSPITAL 683724 4735982 Puente de Siresa Valle de Hecho
+39 Tramo 2: Aragón OSIA 693841 4736299 Puente de los Corralones Aragüés del Puerto
+40 Tramo 2: Aragón OSIA 690872 4730451 Puente de Aragües del Puerto Aragüés del Puerto
+41 Tramo 2: Aragón VERAL 678061 4747863 Aforo de Zuriza Ansó/Fago
+42 Tramo 2: Aragón VERAL 677597 4746914 Surgencia Carretera HU-V-2024 Ansó/Fago
+43 Tramo 2: Aragón VERAL 677281 4743370 Puente de Zabalcoche Ansó/Fago
+44 Tramo 2: Aragón VERAL 677531 4736018 Puente de Ansó Ansó/Fago
+45 Tramo 2: Aragón VERAL 678926 4733578 Puente antes del cruce a Hecho Ansó/Fago
+46 Tramo 2: Aragón VERAL 681043 4729958 Puente Foz Verde Valle de Hecho
+47 Tramo 2: Aragón VERAL 681530 4725255 Pradera en la confluencia con el barranco Búgalo (aguas arriba del aforo de Biniés) Valle de Hecho
+48 Tramo 2: Aragón VERAL 681463 4724958 Aforo de Biniés Valle de Hecho
+49 Tramo 2: Aragón VERAL 678741 4721579 Puente de Biniés Canal de Berdún
+50 Tramo 3: Gállego GÁLLEGO 712980 4740271 Entrada estación de Formigal Sallent de Gállego
+51 Tramo 3: Gállego GÁLLEGO 715688 4738854 Embalse Gállego: Formigal pueblo Sallent de Gállego
+52 Tramo 3: Gállego GÁLLEGO 715871 4738754 Debajo de la presa del embalse del Gállego: Formigal pueblo Sallent de Gállego
+53 Tramo 3: Gállego GÁLLEGO 718216 4738609 Puente de Sallent de Gállego Sallent de Gállego
+54 Tramo 3: Gállego GÁLLEGO 720577 4733999 Central hidroeléctrica de Lanuza Panticosa
+55 Tramo 3: Gállego GÁLLEGO 719418 4726422 Bajo el puente de la ermita Santa Elena (azud CH Biescas I) Biescas
+56 Tramo 3: Gállego GÁLLEGO 719408 4723308 Puente de Biescas Biescas
+57 Tramo 3: Gállego GÁLLEGO 719554 4722410 Retorno de la Central de Biescas II Biescas
+58 Tramo 3: Gállego GÁLLEGO 717970 4710709 Puente N-330 Sabiñánigo Sabiñánigo
+59 Tramo 3: Gállego GÁLLEGO 714654 4705538 Bajo la presade la CH de Javarrella Sabiñánigo
+60 Tramo 3: Gállego GÁLLEGO 714199 4702165 Puente Hostal de Ipiés Sabiñánigo
+61 Tramo 3: Gállego GÁLLEGO 705854 4697457 Puente de Caldearenas Caldearenas
+62 Tramo 3: Gállego GÁLLEGO 702830 4696825 Bajo Azud de la CH Javierrelatre II Caldearenas
+63 Tramo 3: Gállego GÁLLEGO 693298 4697333 Puente de Anzánigo Caldearenas
+64 Tramo 3: Gállego GÁLLEGO 691207 4694805 Bajo las gradas próximas a la cola del embalse de La Peña (cerca confluencia con el río Garona) Las Peñas de Riglos
+65 Tramo 3: Gállego CALDARES 724412 4735012 Presa Panticosa
+66 Tramo 3: Gállego CALDARES 722594 4733475 Puente de Panticosa, aguas arriba de la confluencia con el Bolatica Panticosa
+67 Tramo 3: Gállego CALDARES 721247 4732797 Puente de la Celina (Pueyo de Jaca) Panticosa
+68 Tramo 3: Gállego AURÍN 710470 4726316 Confluencia con el Barranco Cecutar Sabiñánigo
+69 Tramo 3: Gállego AURÍN 712224 4722029 Aguas abajo del azud del Molino de Acumuer Sabiñánigo
+70 Tramo 3: Gállego SIA 727033 4723298 Puente del Cotefablo Yésero
+71 Tramo 3: Gállego SIA 722198 4721987 Puente de Gavin Biescas
+72 Tramo 3: Gállego ASABON 677840 4701003 Puente en Pardinadel Chaz Bailo
+73 Tramo 3: Gállego ASABON 685230 4696090 Pasarela del embalse de La Peña sobre el río Asabón Las Peñas de Riglos
+74 Tramo 4: ARA ARA 733084 4736688 Refugio de Labaza Torla
+75 Tramo 4: ARA ARA 734281 4733956 Puente de Ordiso Torla
+76 Tramo 4: ARA ARA 737035 4731000 Puente de San Nicolás de Bujaruelo Torla
+77 Tramo 4: ARA ARA 735755 4728990 Camping- barranco de Turbón Torla
+78 Tramo 4: ARA ARA 735879 4727889 Puente Sta Elena, aguas arriba del Barranco de las Comas Torla
+79 Tramo 4: ARA ARA 737358 4726550 Desembarque "la Rampa" Torla
+80 Tramo 4: ARA ARA 737482 4726346 Puente de los Navarros Torla
+81 Tramo 4: ARA ARA 737242 4724691 Urb. Ordesa Torla
+82 Tramo 4: ARA ARA 737110 4723778 Bajo aforo Torla Torla
+83 Tramo 4: ARA ARA 735947 4720814 En el entorno del municipio de Broto Broto
+84 Tramo 4: ARA ARA 736226 4715424 Llanos Planduviar Broto
+85 Tramo 4: ARA ARA 736944 4709146 En la población de Fiscal Fiscal
+86 Tramo 4: ARA ARA 739959 4707090 Puente N-260 en Ligüerre de Ara. Fiscal
+87 Tramo 4: ARA ARA 746585 4705922 Janovas Fiscal
+88 Tramo 4: ARA ARA 752151 4703656 Puente en Boltaña junto al camping Boltaña
+89 Tramo 4: ARA ARA 758384 4700382 Puente en la A-138 (Avenida del Sobrarbe en Aínsa) Aínsa-Sobrarbe
+90 Tramo 4: ARA FORCOS 731935 4713254 Barranco Forcos (confluencia con el barranco de la Pera) Broto
+91 Tramo 5:CINCA CINCA 762600 4725270 Aguas abajo presa de Pineta Bielsa
+92 Tramo 5:CINCA CINCA 764027 4725094 Confluencia del río Barrosa con el río Cinca (Bielsa) Bielsa
+93 Tramo 5:CINCA CINCA 765668 4721115 Restos puente, aguas abajo del azud de la CH de Salinas Bielsa
+94 Tramo 5:CINCA CINCA 763972 4719721 Embarque en el paso de las Devotas Tella-Sin
+95 Tramo 5:CINCA CINCA 762342 4715014 Puente Lafortunada Tella-Sin
+96 Tramo 5:CINCA CINCA 758650 4710672 Puente de la N-260 (Escalona) Aínsa-Sobrarbe
+97 Tramo 5:CINCA CINCA 758661 4700598 Puente Ainsa N-260 Aínsa-Sobrarbe
+98 Tramo 5:CINCA BARROSA 762019 4734611 Chorro de la Pinarra Bielsa
+99 Tramo 5:CINCA BARROSA 762231 4732543 Hospital de Parzán, junto a la A-138 Bielsa
+100 Tramo 5:CINCA BARROSA 763421 4729828 Central hidroelectrica Bielsa Bielsa
+101 Tramo 5:CINCA REAL 761098 4728252 Salto de Chisagues Bielsa
+102 Tramo 5:CINCA REAL 763083 4727955 Confluencia Río Real con Río Barrosa en Parzán Bielsa
+103 Tramo 5:CINCA CINQUETA 775714 4727900 Aguas abajo confluencia Cinqueta de la Pez y Cinqueta de Añes Cruces San Juan de Plan
+104 Tramo 5:CINCA CINQUETA 774336 4724678 Puente de hormigón Gistaín
+105 Tramo 5:CINCA CINQUETA 774470 4723209 Estación de Aforo Cinqueta en Molino de Gistaín Gistaín
+106 Tramo 5:CINCA CINQUETA 773960 4719409 Puente de Plan (Solo desembarque) Plan
+107 Tramo 5:CINCA CINQUETA 768571 4717361 Puente de Sin (Solo embarque) Tella-Sin
+108 Tramo 5:CINCA CINQUETA 764529 4719641 Confluencia río Ciqueta con río Cinca Tella-Sin
+109 Tramo 5:CINCA CINQUETA DE LA PEZ 775226 4732073 Cañon del Gato Gistaín
+110 Tramo 5:CINCA CINQUETA DE LA PEZ 775316 4730201 Puente Refugio Tabernes Gistaín
+111 Tramo 5:CINCA CINQUETA DE LA PEZ 776048 4728372 Confluencia del Cinqueta de la Pez y Cinqueta de Añes Cruces San Juan de Plan
+112 Tramo 5:CINCA SALLENA 774240 4726874 Confluencia río Sallena con Río Cinqueta Gistaín
+113 Tramo 5:CINCA IRUES 764395 4713032 Confluencia barranco Garona con río Irués Tella-Sin
+114 Tramo 5:CINCA IRUES 762087 4714938 Confluencia río Iruel con río Cinca Tella-Sin
+115 Tramo 5:CINCA YAGA 756819 4720979 Escuaín Tella-Sin
+116 Tramo 5:CINCA YAGA 758631 4719597 Garganta de Estaronillo Tella-Sin
+117 Tramo 5:CINCA YAGA 759688 4715429 Confluencia río Yaga con río Cinca (Hospital de Tella) Tella-Sin
+118 Tramo 5:CINCA BELLOS 755423 4711953 Puente en la HU-631 con dirección al Cañón de Añisclo (antes de la entrada al Parque Nacional de Ordesa y Monte Perdido) Fanlo
+119 Tramo 5:CINCA BELLOS 758545 4709686 Confluencia río Bellós con río Cinca Puértolas
+120 Tramo 6:ESERA ESERA 794872 4731292 Confluencia río Remuñe Benasque
+121 Tramo 6:ESERA ESERA 793521 4729431 Puente de Los Banos Benasque
+122 Tramo 6:ESERA ESERA 792153 4727179 Puente cola Embalse Paso Nuevo Benasque
+123 Tramo 6:ESERA ESERA 785597 4720445 Bajo presa de Linsoles Sahún
+124 Tramo 6:ESERA ESERA 786147 4712577 Puente Castejon de Sos Castejón de Sos
+125 Tramo 6:ESERA ESERA 785861 4711603 Puente El Run Castejón de Sos
+126 Tramo 6:ESERA ESERA 782138 4708570 Puente de Seira Seira
+127 Tramo 6:ESERA ESERA 778214 4702929 Presa de Campo Foradad del Toscar
+128 Tramo 6:ESERA ESERA 778625 4702615 Presa de Argone Campo
+129 Tramo 6:ESERA ESERA 777981 4692573 Desfiladero de las Pirámides Santaliestra y San Quílez
+130 Tramo 6:ESERA ESERA 777283 4689593 Puente Santaliestra Santaliestra y San Quílez
+131 Tramo 6:ESERA ESTOS 787749 4729525 Cascadas de Turmo Benasque
+132 Tramo 6:ESERA ESTOS 790118 4726130 Embalse de Estós Benasque
+133 Tramo 6:ESERA VALLIBIERNA 797007 4723877 Refugio Pescadores Benasque
+134 Tramo 6:ESERA VALLIBIERNA 791988 4726790 Embalse Paso Nuevo Benasque
+135 Tramo 6:ESERA VIU 774753 4706275 Puente de Viu Foradada del Toscar
+136 Tramo 6:ESERA RIALVO 785208 4703562 Puente en Llert Valle de Bardají
+137 Tramo 6:ESERA RIALVO 779551 4699541 Confluencia con el río Ésera Campo
+138 Tramo 6:ESERA BARBARUENS 776937 4712237 Pasarela de Barbaruens (Bordas de Bilsé) Seira
+139 Tramo 6:ESERA BARBARUENS 781187 4708225 Puente antes de la confluencia del Barbaruens con el Ésera, próximo a Seira Seira
+140 Tramo 7: ISABENA ISABENA 797633 4703767 Confluencia del río Blanco con el río Isábena, próximo a Alins Laspaúles/Beranuy
+141 Tramo 7: ISABENA ISABENA 796552 4701113 Confluencia Barranco de Garanta con río Isábena (solo desembarque) Laspaúles/Beranuy
+142 Tramo 7: ISABENA ISABENA 796017 4700156 Puente del Monasterio Obarra Beranuy
+143 Tramo 7: ISABENA ISABENA 794570 4691750 Puente de Serraduy Isábena
+144 Tramo 8: GUATIZALEMA GUATIZALEMA 725828 4687412 Junto al Barranco de la Pillera Nueno
+145 Tramo 8: GUATIZALEMA GUATIZALEMA 723948 4683365 Cola embalse Vadiello Loporzano
+146 Tramo 8: GUATIZALEMA GUATIZALEMA 724525 4679641 Debajo de la presa de Vadiello Loporzano
+147 Tramo 8: GUATIZALEMA GUATIZALEMA 724318 4676399 La Almunia del Romeral Loporzano
+148 Tramo 9: ALCANADRE ALCANADRE 737475 4692967 Rampas (antes del barranco de Binueste) Boltaña
+149 Tramo 9: ALCANADRE ALCANADRE 736974 4690509 Pasarela de Bara Sabiñánigo
+150 Tramo 9: ALCANADRE ALCANADRE 740296 4673090 Presa de Bierge Bierge
+151 Tramo 9: ALCANADRE ALCANADRE 739052 4663389 Puente Arbex Lascellas-Ponzano
+
