@@ -1,7 +1,10 @@
 extern crate osmpbfreader;
 extern crate rand;
+extern crate itertools;
 use std::env::args;
 use std::collections::HashMap;
+use std::collections::HashSet;
+use std::hash::Hash;
 use std::io::Write;
 use rand::Rng;
 
@@ -11,10 +14,17 @@ fn is_navigable(v: &String) -> bool {
 }
 
 pub struct Section {
-  pub grade: String,
+  pub grades: HashSet<String>,
   pub path: Vec<(f64,f64)>,
+  pub river_names: HashSet<String>,
   pub put_in: Option<(f64,f64)>,
   pub egress: Option<(f64,f64)>
+}
+
+fn hash_set_from_one<T: Eq + Hash>(e : T) -> HashSet<T> {
+  let mut hs = HashSet::new();
+  hs.insert(e);
+  hs
 }
 
 fn geodetic_dist_great_circle(lat1:f64,lon1:f64,lat2:f64,lon2:f64) -> f64 {
@@ -96,8 +106,11 @@ fn process_file(input_filename : &String, output_filename : &String) {
 
         // check if it has whitewater data
         if obj.tags().contains_key("whitewater:section_grade") {
-          sections.push(Section { grade: obj.tags().get("whitewater:section_grade").unwrap().to_string(),
-                                  path, put_in:None, egress:None});
+          let river_names : HashSet<String> = match obj.tags().get("name") {
+            Some(name) => hash_set_from_one(name.to_string()),
+            None => HashSet::new() };
+          sections.push(Section { grades: hash_set_from_one(obj.tags().get("whitewater:section_grade").unwrap().to_string()),
+                                  path, put_in: None, egress: None, river_names });
         }
 
       }
@@ -160,6 +173,10 @@ fn process_file(input_filename : &String, output_filename : &String) {
             sections[i].path.append(&mut path_of_section_j);
             // Don't forget to copy egress if any
             sections[i].egress = sections[j].egress;
+            // Append grade if needed
+            sections[i].grades.union(&sections[j].grades);
+            // Merge river names if needed
+            sections[i].river_names.union(&sections[j].river_names);
           }
         }
       }
@@ -210,13 +227,16 @@ fn process_file(input_filename : &String, output_filename : &String) {
       firstpt = false;
       write!(fout, "[{},{}]", p.1, p.0).expect("Write point");
     }
-    write!(fout, "] }}, \"properties\": {{ \"name\": \"Section{}\", \"stroke\": \"#{:06x}\", \"grade\": \"{}\" }} }}",
-                                                                               section_nb, color, section.grade).expect("Write path");
+    write!(fout, "] }}, \"properties\": {{ \"name\": \"Section{}\", \"stroke\": \"#{:06x}\", \"grade\": \"{}\"", section_nb, color,
+                                                                           itertools::join(&section.grades,",")).expect("Write path");
+    if section.river_names.len()>0 {
+      write!(fout, ", \"river_name\": \"{}\"", itertools::join(&section.river_names,",")).expect("Write river name");
+    };
+    write!(fout, " }} }}").expect("Write path closure");
     match section.egress {
       Some(p) => {
-        // In case we have an egress in from of a put_in, since we cannot handle transparency: put a small marker size
         write!(fout, ",\n{{ \"type\": \"Feature\", \"geometry\": {{ \"type\": \"Point\", \"coordinates\": [{}, {}] }}, \
-                      \"properties\": {{ \"name\": \"Egress{}\", \"marker-color\": \"#{:06x}\", \"marker-size\": \"small\" }} }}",
+                      \"properties\": {{ \"name\": \"Egress{}\", \"marker-color\": \"#{:06x}\" }} }}",
                                                                                   p.1, p.0, section_nb, color).expect("Write egress");
       },
       None => ()
