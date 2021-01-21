@@ -53,10 +53,8 @@ cd ..
 ./evo_scrap.sh # 2 or 3min
 # Import evo data into MongoDB
 ./evo_import.py # quick
-# Scrap rivermap.ch data to a .xml file
-./rivermap_scrap.sh # quick
-# Import rivermap data into MongoDB
-./rivermap_import.py # quick
+# Get rivermap licensed data
+./rivermap_get_odbl_data.py
 # Scrap ckfiumi.net data to a .json file
 ./ckfiumi_scrap.sh # 1 or 2 min
 # Import ckfiumi data into MongoDB
