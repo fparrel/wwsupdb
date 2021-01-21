@@ -32,8 +32,14 @@ elif config["data_source"]=="mongo":
         except pymongo.errors.ServerSelectionTimeoutError:
             abort(504,"MongoDB server not responding")
         if river==None:
-            river_osm = client.wwsupdb.osm.find_one({"_id":name})
-            river = {"osm":river_osm}
+            paths = []
+            names = set([])
+            for river_osm in client.wwsupdb.osm.find({"names":name}):
+                paths.extend(river_osm["paths"])
+                names.update(river_osm["names"])
+            #river_osm = client.wwsupdb.osm.find_one({"_id":name})
+            #river = {"osm":river_osm}
+            river = {"osm":{"paths":paths}}#,"names":names}}
         return river
 
     def save_river(river):

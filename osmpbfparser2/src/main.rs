@@ -14,8 +14,6 @@ use std::mem;
 // Structure holding a river, used for bson serialization
 #[derive(Serialize, Deserialize, Debug)]
 pub struct River {
-    //#[serde(rename = "_id")]  // Use MongoDB's special primary key field name when serializing 
-    //pub id: String,
     pub paths: Vec<(f64,f64)>
 }
 
@@ -45,16 +43,16 @@ fn process_file(filename : &String, rivers_coll : &mongodb::coll::Collection) {
                 }
                 // Insert into MongoDB
                 let river = River {
-                    //id: obj.tags().get("name").unwrap().to_string(),
                     paths: path
                 };
+                let names : Vec<String> = obj.tags().iter().filter(|tag| tag.0.starts_with("name:")).map(|tag| tag.1.clone()).collect();
 
                 let serialized_river = bson::to_bson(&river);  // Serialize
                 match serialized_river {
                     Ok(sr) => {
                         if let bson::Bson::Document(docu) = sr { // Documentize
                             bulk.push(WriteModel::UpdateOne { filter: doc!{"_id": obj.tags().get("name").unwrap().to_string()},
-                                                              update: doc!{"$push": docu},
+                                                              update: doc!{"$push": docu, "$addToSet": {"names": {"$each": bson::to_bson(&names).unwrap()}}},
                                                               upsert: Some(true) });
                             if bulk.len()>100 {
                                 println!("Insert into db... {}",bulk.len());
