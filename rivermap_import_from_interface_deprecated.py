@@ -51,9 +51,9 @@ for a in r.find('abschnitte'):
     if low!=0.0:
       parcours['water_lvls_kayak']['low']=low
     if med!=0.0:
-      parcours['water_lvls_kayak']['low']=med
+      parcours['water_lvls_kayak']['med']=med
     if high!=0.0:
-      parcours['water_lvls_kayak']['low']=high
+      parcours['water_lvls_kayak']['high']=high
     assert(a.attrib['einheit'] in ('cm', u'm\xb3/s'))
     parcours['station_is_indirect'] = (a.attrib['hilfsstation']=='1')
   else:

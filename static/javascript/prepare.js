@@ -216,6 +216,13 @@ function routeCkFiumi2Html(r) {
             + '<ul><li><b>Start:</b> ' + r.start + '</li><li><b>End:</b> ' + r.end + '</li></ul>';
 }
 
+function dispDist(d) {
+    if (d>1000.0) {
+        return Math.round(d/1000.0) + '&nbsp;km';
+    }
+    else return Math.round(d) + '&nbsp;m';
+}
+
 function loadRiverToMap(river_obj) {
     console.log(river_obj);
     clearMapObjects();
@@ -233,11 +240,16 @@ function loadRiverToMap(river_obj) {
     var pts=[];
     var pathshtml='';
     for(i=0;i<river_obj.osm.paths.length;i++) {
-        pathshtml += ' <input type="checkbox" name="paths_sel" value="path'+i+'" onclick="selPathsChange();" checked ondblclick="zoomToPath('+i+');"> Path #'+i;
+        pathshtml += ' <span ondblclick="zoomToPath('+i+');" onmouseover="highlightPath(this,'+i+');" onmouseout="unhighlightPath(this,'+i+');"><input type="checkbox" name="paths_sel" value="path'+i+'" onclick="selPathsChange();" checked> Path #'+i+'</span>';
         pts[i]=[];
+        var lg = 0.0;
         for(j=0;j<river_obj.osm.paths[i].length;j++) {
             pts[i][j] = {"lat": river_obj.osm.paths[i][j][0], "lng": river_obj.osm.paths[i][j][1], "lon": river_obj.osm.paths[i][j][1]};
+            if (j<river_obj.osm.paths[i].length-1) {
+                lg += geodeticDist(river_obj.osm.paths[i][j][0],river_obj.osm.paths[i][j][1],river_obj.osm.paths[i][j+1][0],river_obj.osm.paths[i][j+1][1]);
+            }
         }
+        pathshtml += ' (' + dispDist(lg) + ')';
     }
     pathshtml += '<input type="button" value="Merge selected" onclick="mergeSelectedPaths();"> <input type="button" value="Remove unselected" onclick="removeUnselectedPaths();">  <input type="button" id="split_btn" value="Split all" onclick="splitPaths();"><span id="split_names"></span>';
     $("#paths").html(pathshtml);
@@ -293,3 +305,29 @@ function loadRiverToMap(river_obj) {
         $("#ckfiumi").html(html);
     }
 }
+
+function lg2pt(evt,lg) {
+    if(evt.keyCode==13) { // Enter
+        computelg2pt(parseInt(lg));
+    }
+}
+
+function computelg2pt(lg) {
+    if(current_river_obj.osm.paths.length!=1) {
+        $("#lg2pterror").html("Valid only if one path");
+    } else {
+        var i=0;
+        var l=0.0;
+        while(l<lg) {
+            if (i+2 > current_river_obj.osm.paths[0].length) {
+                $("#lg2pterror").html("Length bigger than river");
+                return;
+            }
+            l += geodeticDist(current_river_obj.osm.paths[0][i][0],current_river_obj.osm.paths[0][i][1],current_river_obj.osm.paths[0][i+1][0],current_river_obj.osm.paths[0][i+1][1]);
+            i++;
+        }
+        console.log(current_river_obj.osm.paths[0][i]);
+        addPoint(new Point(current_river_obj.osm.paths[0][i][0],current_river_obj.osm.paths[0][i][1]));
+   }
+}
+

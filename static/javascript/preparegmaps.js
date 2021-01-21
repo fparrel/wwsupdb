@@ -1,6 +1,9 @@
 
 var river_paths = [];
 
+const path_color = "#bb8000";
+const highlighted_path_color = "red";
+
 function clearMapObjects() {
     var i;
     for(i=0;i<river_paths.length;i++) {
@@ -22,6 +25,16 @@ function zoomToPath(i) {
     map.fitBounds(bounds);
 }
 
+function highlightPath(span,i) {
+    river_paths[i].setOptions({strokeColor: highlighted_path_color});
+    span.style.color = highlighted_path_color;
+}
+
+function unhighlightPath(span,i) {
+    river_paths[i].setOptions({strokeColor: path_color});
+    span.style.color = "unset";
+}
+
 function addRiverPaths(river_points) {
     var i;
     var j;
@@ -31,7 +44,7 @@ function addRiverPaths(river_points) {
             {
                 path: river_points[i],
                 geodesic: true,
-                strokeColor: "#bb8000",
+                strokeColor: path_color,
                 strokeOpacity: 1.0,
                 strokeWeight: 4
             });
@@ -93,8 +106,8 @@ function addPoint(newpt) {
     //current_deb
     var pt_marker;
     pt_marker = new google.maps.Marker({position: new google.maps.LatLng(newpt.lat, newpt.lon), map: map, draggable: true});
-    var url = '/river/'+current_river+'/parcours/'+current_parcours_id+(current_deb?'/debarquement':'/embarquement')+'/point/'+newpt.lat+'/'+newpt.lon;
-    $.get(url, function() { console.log('done'); } ).fail(function(err){$("#svrresponse").html(err.responseText);});
+    //var url = '/river/'+current_river+'/parcours/'+current_parcours_id+(current_deb?'/debarquement':'/embarquement')+'/point/'+newpt.lat+'/'+newpt.lon;
+    //$.get(url, function() { console.log('done'); } ).fail(function(err){$("#svrresponse").html(err.responseText);});
 }
 
 function addPointRivermap(newpt,title) {
